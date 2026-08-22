@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.log
+
+# File lama (tidak dipakai)
+login.js
+jurnal1.js
+tes.html
+link.txt
+jurnal-p*.js

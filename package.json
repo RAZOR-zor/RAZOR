@@ -1,0 +1,63 @@
+{
+  "name": "razor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RAZOR - Kegiatan Mingguan Otomatis",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "web": "node server.js",
+    "dist": "electron-builder --win",
+    "dist:portable": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.razor.kegiatan-mingguan",
+    "productName": "RAZOR",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "server.js",
+      "preload.js",
+      "preload-catatan.js",
+      "index.html",
+      "catatan.html",
+      "splash.html",
+      "script/**/*",
+      "icon.ico",
+      "icon.png",
+      "link.txt",
+      "jurnal.js",
+      "package.json"
+    ],
+    "extraResources": [],
+    "icon": "icon.ico",
+    "win": {
+      "icon": "icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "${productName}-${version}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "RAZOR",
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "installerHeaderIcon": "icon.ico",
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}

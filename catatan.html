@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catatan Akun</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette Tema Warm & Cozy */
+            --bg-body: #2b2523;
+            --paper-bg: #362f2d;
+            --header-bg: #211c1b;
+            --accent-warm: #e0a96d;
+            --accent-warm-hover: #ecc19c;
+            --text-primary: #f4ebe1;
+            --text-secondary: #a89f91;
+            --border-color: #4a403d;
+            --line-number-color: #786c68;
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--paper-bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: stretch;
+            justify-content: stretch;
+            padding: 0;
+            color: var(--text-primary);
+        }
+
+        /* Container Notepad Utama */
+        .notepad-app {
+            width: 100%;
+            height: 100vh;
+            background: var(--paper-bg);
+            display: flex;
+            flex-direction: column;
+            border: none;
+            overflow: hidden;
+        }
+
+        /* Topbar Window Hanya Tombol Close (X) */
+        .notepad-topbar {
+            background: var(--header-bg);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-bottom: 1px solid var(--border-color);
+            -webkit-app-region: drag;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            -webkit-app-region: no-drag;
+        }
+
+        .close-btn:hover {
+            background: rgba(217, 119, 87, 0.2);
+            color: #d97757;
+        }
+
+        /* Toolbar Hanya Tombol "+ Tambah Format Akun" */
+        .notepad-toolbar {
+            background: rgba(33, 28, 27, 0.6);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tool-btn {
+            background: var(--accent-warm);
+            color: #211c1b;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .tool-btn:hover {
+            background: var(--accent-warm-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Area Editor */
+        .notepad-editor-container {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--paper-bg);
+        }
+
+        /* Nomor Baris */
+        .line-numbers {
+            width: 48px;
+            padding: 18px 0;
+            background: rgba(33, 28, 27, 0.25);
+            border-right: 1px solid var(--border-color);
+            color: var(--line-number-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: right;
+            padding-right: 12px;
+            user-select: none;
+            overflow-y: scroll;
+            
+            /* Sembunyikan scrollbar */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE dan Edge */
+        }
+
+        .line-numbers::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, dan Opera */
+        }
+
+        /* Textarea Editor */
+        .notepad-editor {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            padding: 18px 20px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            resize: none;
+            white-space: pre;
+            overflow-y: auto;
+
+            /* Sembunyikan scrollbar */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE dan Edge */
+        }
+
+        .notepad-editor::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, dan Opera */
+        }
+
+        .notepad-editor::placeholder {
+            color: var(--line-number-color);
+        }
+
+        /* Footer Status Bar */
+        .notepad-footer {
+            background: var(--header-bg);
+            padding: 8px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .status-info {
+            display: flex;
+            gap: 14px;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--accent-warm);
+            color: #211c1b;
+            font-weight: 700;
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-size: 0.88rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 640px) {
+            .notepad-app {
+                height: 88vh;
+            }
+            .line-numbers {
+                display: none;
+            }
+            .notepad-toolbar {
+                padding: 8px 12px;
+            }
+            .tool-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notepad-app" id="notepadApp">
+        <!-- Topbar Window Hanya Tombol Close (X) -->
+        <div class="notepad-topbar">
+            <button class="close-btn" id="closeBtn" title="Tutup">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Toolbar Hanya Tombol "+ Tambah Format Akun" -->
+        <div class="notepad-toolbar">
+            <button class="tool-btn" id="insertBtn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                + Tambah Format Akun
+            </button>
+        </div>
+
+        <!-- Workspace Editor -->
+        <div class="notepad-editor-container">
+            <div class="line-numbers" id="lineNumbers">1</div>
+            <textarea id="notepad" class="notepad-editor" spellcheck="false" placeholder="Ketik atau klik '+ Tambah Format Akun' di atas..."></textarea>
+        </div>
+
+        <!-- Footer Status -->
+        <div class="notepad-footer">
+            <div class="status-info">
+                <span id="charCount">0 karakter</span>
+                <span>•</span>
+                <span id="lineCount">1 baris</span>
+            </div>
+            <div>UTF-8 | Cozy Mode</div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Format akun ditambahkan!</div>
+
+    <script>
+        const notepad = document.getElementById('notepad');
+        const lineNumbers = document.getElementById('lineNumbers');
+        const charCount = document.getElementById('charCount');
+        const lineCount = document.getElementById('lineCount');
+        const notepadApp = document.getElementById('notepadApp');
+        const closeBtn = document.getElementById('closeBtn');
+        const insertBtn = document.getElementById('insertBtn');
+
+        const defaultText = `Nama     : Email Utama
+Username : contoh.email@gmail.com
+Password : Password123!
+Catatan  : Email pemulihan terhubung ke HP
+
+-----------------------------------------
+
+Nama     : Akun Bisnis
+Username : @bisnissaya
+Password : RahasiaSuper2026
+Catatan  : Autentikasi 2FA aktif
+
+-----------------------------------------
+`;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            window.catatanAPI.load().then(text => {
+                if (text !== null) {
+                    notepad.value = text;
+                } else {
+                    notepad.value = defaultText;
+                    window.catatanAPI.save(notepad.value);
+                }
+                updateEditorStats();
+            });
+        });
+
+        notepad.addEventListener('input', () => {
+            updateEditorStats();
+            window.catatanAPI.save(notepad.value);
+        });
+
+        notepad.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = notepad.scrollTop;
+        });
+
+        closeBtn.addEventListener('click', () => {
+            window.close();
+        });
+
+        insertBtn.addEventListener('click', insertTemplate);
+
+        function updateEditorStats() {
+            const text = notepad.value;
+            const lines = text.split('\n');
+            const totalLines = lines.length;
+
+            let lineNumHTML = '';
+            for (let i = 1; i <= totalLines; i++) {
+                lineNumHTML += i + '<br>';
+            }
+            lineNumbers.innerHTML = lineNumHTML;
+
+            charCount.textContent = text.length + ' karakter';
+            lineCount.textContent = totalLines + ' baris';
+        }
+
+        function insertTemplate() {
+            const template = `Nama     : \nUsername : \nPassword : \nCatatan  : \n-----------------------------------------\n`;
+            
+            const start = notepad.selectionStart;
+            const end = notepad.selectionEnd;
+            const text = notepad.value;
+
+            notepad.value = text.substring(0, start) + template + text.substring(end);
+            notepad.selectionStart = notepad.selectionEnd = start + template.length;
+            
+            notepad.focus();
+            updateEditorStats();
+            window.catatanAPI.save(notepad.value);
+            showToast('Format akun ditambahkan!');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
