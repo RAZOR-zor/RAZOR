@@ -1,0 +1,3 @@
+# RAZOR
+
+Kegiatan Mingguan Otomatis
