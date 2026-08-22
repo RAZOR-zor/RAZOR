@@ -3020,22 +3020,14 @@ function updateProfileUI() {
             closeProfile(p);
         });
         el.addEventListener('click', () => {
-            if (p === activeProfile) {
-                closeProfilePicker();
-                return;
-            }
+            if (p === activeProfile) return;
             activateProfile(p);
-            closeProfilePicker();
         });
         el.addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                if (p === activeProfile) {
-                    closeProfilePicker();
-                    return;
-                }
+                if (p === activeProfile) return;
                 activateProfile(p);
-                closeProfilePicker();
             }
         });
         grid.appendChild(el);
