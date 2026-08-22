@@ -15,5 +15,11 @@ contextBridge.exposeInMainWorld('desktop', {
     chooseJournalDir: () => ipcRenderer.invoke('settings:choose-journal-dir'),
     setJournalDir: (dir) => ipcRenderer.invoke('settings:set-journal-dir', dir),
     setMode: (mode) => ipcRenderer.invoke('settings:set-mode', mode),
-    getScriptFiles: () => ipcRenderer.invoke('scripts:list')
+    getScriptFiles: () => ipcRenderer.invoke('scripts:list'),
+    downloadUpdate: () => ipcRenderer.send('update:download'),
+    installUpdate: () => ipcRenderer.send('update:install'),
+    onUpdateAvailable: (cb) => ipcRenderer.on('update-available', (_, data) => cb(data)),
+    onUpdateProgress: (cb) => ipcRenderer.on('update-progress', (_, data) => cb(data)),
+    onUpdateDownloaded: (cb) => ipcRenderer.on('update-downloaded', () => cb()),
+    onUpdateNotAvailable: (cb) => ipcRenderer.on('update-not-available', () => cb())
 });

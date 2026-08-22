@@ -1,6 +1,6 @@
 {
   "name": "razor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "RAZOR - Kegiatan Mingguan Otomatis",
   "main": "main.js",
@@ -38,12 +38,21 @@
     ],
     "extraResources": [],
     "icon": "icon.ico",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "RAZOR-VOID",
+        "repo": "razorr"
+      }
+    ],
     "win": {
       "icon": "icon.ico",
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "artifactName": "${productName}-${version}-Setup.${ext}"
@@ -59,5 +68,8 @@
       "installerHeaderIcon": "icon.ico",
       "deleteAppDataOnUninstall": false
     }
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
   }
 }

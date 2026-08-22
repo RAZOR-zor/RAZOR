@@ -2,6 +2,10 @@ const { app, BrowserWindow, ipcMain, screen, dialog } = require('electron');
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
+const { autoUpdater } = require('electron-updater');
+
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
 
 const APP_WIDTH = 600;
 const BASE_PORT = 3998;
@@ -130,6 +134,30 @@ function startServer() {
 
 function stopServer() {
     try { journalServer.stopServer(); } catch (_) { }
+}
+
+function initAutoUpdater(win) {
+    autoUpdater.logger = {
+        info: m => win.webContents.send('log', '[Updater] ' + m),
+        warn: m => win.webContents.send('log', '[Updater] ' + m),
+        error: m => win.webContents.send('log', '[Updater] ' + m)
+    };
+    autoUpdater.on('update-available', info => {
+        win.webContents.send('update-available', { version: info.version });
+    });
+    autoUpdater.on('update-not-available', () => {
+        win.webContents.send('update-not-available');
+    });
+    autoUpdater.on('download-progress', p => {
+        win.webContents.send('update-progress', { percent: Math.round(p.percent) });
+    });
+    autoUpdater.on('update-downloaded', () => {
+        win.webContents.send('update-downloaded');
+    });
+    autoUpdater.on('error', err => {
+        console.error('[Updater] Error:', err.message);
+    });
+    autoUpdater.checkForUpdates().catch(() => {});
 }
 
 function restartServer() {
@@ -314,6 +342,7 @@ function createWindow() {
     mainWin.once('ready-to-show', () => {
         mainReady = true;
         tryShowMain();
+        initAutoUpdater(mainWin);
     });
     mainWin.webContents.on('did-attach-webview', (event, contents) => {
         contentsById.set(contents.id, contents);
@@ -539,6 +568,14 @@ ipcMain.on('win:refresh-page', () => {
     if (contents) {
         contents.reload();
     }
+});
+
+ipcMain.on('update:download', () => {
+    autoUpdater.downloadUpdate();
+});
+
+ipcMain.on('update:install', () => {
+    autoUpdater.quitAndInstall(false, true);
 });
 
 if (!app.requestSingleInstanceLock()) {
