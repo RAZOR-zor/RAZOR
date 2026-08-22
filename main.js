@@ -138,26 +138,42 @@ function stopServer() {
 
 function initAutoUpdater(win) {
     autoUpdater.logger = {
-        info: m => win.webContents.send('log', '[Updater] ' + m),
-        warn: m => win.webContents.send('log', '[Updater] ' + m),
-        error: m => win.webContents.send('log', '[Updater] ' + m)
+        info: m => {
+            console.log('[Updater]', m);
+            win.webContents.send('log', '[Updater] ' + m);
+        },
+        warn: m => {
+            console.warn('[Updater]', m);
+            win.webContents.send('log', '[Updater] ' + m);
+        },
+        error: m => {
+            console.error('[Updater]', m);
+            win.webContents.send('log', '[Updater] ' + m);
+        }
     };
     autoUpdater.on('update-available', info => {
+        console.log('[Updater] Update available:', info.version);
         win.webContents.send('update-available', { version: info.version });
     });
     autoUpdater.on('update-not-available', () => {
+        console.log('[Updater] No update available');
         win.webContents.send('update-not-available');
     });
     autoUpdater.on('download-progress', p => {
         win.webContents.send('update-progress', { percent: Math.round(p.percent) });
     });
     autoUpdater.on('update-downloaded', () => {
+        console.log('[Updater] Update downloaded');
         win.webContents.send('update-downloaded');
     });
     autoUpdater.on('error', err => {
-        console.error('[Updater] Error:', err.message);
+        console.error('[Updater] Error:', err.message, err.stack);
+        win.webContents.send('update-error', err.message);
     });
-    autoUpdater.checkForUpdates().catch(() => {});
+    autoUpdater.checkForUpdates().catch(err => {
+        console.error('[Updater] checkForUpdates failed:', err.message);
+        win.webContents.send('update-error', err.message);
+    });
 }
 
 function restartServer() {

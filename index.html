@@ -2423,6 +2423,11 @@ function setupDesktop() {
         setUpdateStatus('Sudah versi terbaru.');
         btnCheckUpdate.disabled = false;
     });
+
+    window.desktop.onUpdateError(msg => {
+        setUpdateStatus('Error: ' + msg);
+        btnCheckUpdate.disabled = false;
+    });
 }
 
 function setSettingsStatus(elId, text, kind) {
