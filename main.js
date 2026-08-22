@@ -537,6 +537,20 @@ ipcMain.handle('catatan:save', (e, text) => {
     } catch (_) { return false; }
 });
 
+ipcMain.handle('catatan:export', async (e, text) => {
+    const win = BrowserWindow.fromWebContents(e.sender);
+    const res = await dialog.showSaveDialog(win || null, {
+        title: 'Export Catatan',
+        defaultPath: 'catatan.txt',
+        filters: [{ name: 'Text File', extensions: ['txt'] }]
+    });
+    if (res.canceled || !res.filePath) return false;
+    try {
+        fs.writeFileSync(res.filePath, text || '', 'utf8');
+        return true;
+    } catch (_) { return false; }
+});
+
 ipcMain.on('win:open-catatan', () => {
     if (catatanWin && !catatanWin.isDestroyed()) {
         catatanWin.focus();

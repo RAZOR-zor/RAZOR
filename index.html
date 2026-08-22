@@ -758,6 +758,33 @@
 
         body.desktop .titlebar { display: flex; }
 
+        .update-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            left: 0; right: 0; bottom: 52px;
+            z-index: 60;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #1a472a, #0d3320);
+            border-top: 1px solid #2d6a4f;
+            color: #b7e4c7;
+            font-size: 13px;
+        }
+        .update-banner-actions { display: flex; gap: 8px; }
+        .update-btn {
+            border: none; border-radius: 6px; padding: 6px 14px;
+            font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s;
+        }
+        .update-download {
+            background: #52b788; color: #0d3320;
+        }
+        .update-download:hover { background: #74c69d; }
+        .update-install {
+            background: #f4d35e; color: #1a1a1a;
+        }
+        .update-install:hover { background: #f9e784; }
+
         .bottom-bar {
             display: none;
             position: fixed;
@@ -2022,6 +2049,14 @@
     </div>
 </div>
 
+<div class="update-banner" id="updateBanner" style="display:none;">
+    <span id="updateBannerText">Update tersedia!</span>
+    <div class="update-banner-actions">
+        <button type="button" class="update-btn update-download" id="btnUpdateDownload">Download</button>
+        <button type="button" class="update-btn update-install" id="btnUpdateInstall" style="display:none;">Restart &amp; Install</button>
+    </div>
+</div>
+
 <div class="bottom-bar">
     <div class="bottom-info">
         <span id="footCount"></span>
@@ -2302,6 +2337,43 @@ function setupDesktop() {
         window.desktop.injectScript(activeProfile ? activeProfile.id : undefined);
     });
     document.getElementById('btnSettings').addEventListener('click', openSettings);
+
+    // Auto-update listeners
+    const updateBanner = document.getElementById('updateBanner');
+    const updateBannerText = document.getElementById('updateBannerText');
+    const btnUpdateDownload = document.getElementById('btnUpdateDownload');
+    const btnUpdateInstall = document.getElementById('btnUpdateInstall');
+
+    btnUpdateDownload.addEventListener('click', () => {
+        window.desktop.downloadUpdate();
+        btnUpdateDownload.textContent = 'Mengunduh…';
+        btnUpdateDownload.disabled = true;
+    });
+
+    btnUpdateInstall.addEventListener('click', () => {
+        window.desktop.installUpdate();
+    });
+
+    window.desktop.onUpdateAvailable(info => {
+        updateBanner.style.display = 'flex';
+        updateBannerText.textContent = 'Update v' + info.version + ' tersedia!';
+        btnUpdateDownload.style.display = 'inline-block';
+        btnUpdateDownload.textContent = 'Download';
+        btnUpdateDownload.disabled = false;
+        btnUpdateInstall.style.display = 'none';
+    });
+
+    window.desktop.onUpdateProgress(p => {
+        updateBannerText.textContent = 'Mengunduh… ' + p.percent + '%';
+        btnUpdateDownload.style.display = 'inline-block';
+        btnUpdateDownload.textContent = p.percent + '%';
+    });
+
+    window.desktop.onUpdateDownloaded(() => {
+        updateBannerText.textContent = 'Update siap diinstall!';
+        btnUpdateDownload.style.display = 'none';
+        btnUpdateInstall.style.display = 'inline-block';
+    });
 }
 
 function setSettingsStatus(elId, text, kind) {
@@ -2948,14 +3020,22 @@ function updateProfileUI() {
             closeProfile(p);
         });
         el.addEventListener('click', () => {
-            pendingProfile = p;
-            refreshProfileSelection();
+            if (p === activeProfile) {
+                closeProfilePicker();
+                return;
+            }
+            activateProfile(p);
+            closeProfilePicker();
         });
         el.addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                pendingProfile = p;
-                refreshProfileSelection();
+                if (p === activeProfile) {
+                    closeProfilePicker();
+                    return;
+                }
+                activateProfile(p);
+                closeProfilePicker();
             }
         });
         grid.appendChild(el);
@@ -2969,14 +3049,10 @@ function refreshProfileSelection() {
     grid.querySelectorAll('.profile-tile').forEach(el => {
         const p = el._profile;
         el.classList.toggle('cur', p === activeProfile);
-        el.classList.toggle('sel', p === pendingProfile && p !== activeProfile);
+        el.classList.remove('sel');
     });
     const hint = document.getElementById('profilePickerHint');
-    if (hint) {
-        hint.textContent = (pendingProfile && pendingProfile !== activeProfile)
-            ? 'Tutup untuk membuka ' + pendingProfile.name
-            : '';
-    }
+    if (hint) hint.textContent = '';
 }
 
 function updateTabUI() {
