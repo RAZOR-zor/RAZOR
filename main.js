@@ -588,6 +588,10 @@ ipcMain.on('update:download', () => {
     autoUpdater.downloadUpdate();
 });
 
+ipcMain.on('update:check', () => {
+    autoUpdater.checkForUpdates().catch(() => {});
+});
+
 ipcMain.on('update:install', () => {
     autoUpdater.quitAndInstall(false, true);
 });

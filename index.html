@@ -2042,6 +2042,15 @@
             </div>
             <div class="settings-hint">Pilih animasi yang ditampilkan di area masthead.</div>
         </div>
+        <div class="settings-field" id="updateSection">
+            <label>Pembaruan</label>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <button type="button" class="open-browser" id="btnCheckUpdate" style="flex:1;">Cek Update</button>
+                <button type="button" class="open-browser" id="btnUpdateNow" style="flex:1;display:none;background:#52b788;color:#0d3320;">Download Update</button>
+                <button type="button" class="open-browser" id="btnRestartInstall" style="flex:1;display:none;background:#f4d35e;color:#1a1a1a;">Restart &amp; Install</button>
+            </div>
+            <div class="settings-status" id="updateStatus"></div>
+        </div>
         <div class="settings-status" id="settingsStatus"></div>
     </div>
     <div class="wp-footer">
@@ -2343,36 +2352,76 @@ function setupDesktop() {
     const updateBannerText = document.getElementById('updateBannerText');
     const btnUpdateDownload = document.getElementById('btnUpdateDownload');
     const btnUpdateInstall = document.getElementById('btnUpdateInstall');
+    const btnCheckUpdate = document.getElementById('btnCheckUpdate');
+    const btnUpdateNow = document.getElementById('btnUpdateNow');
+    const btnRestartInstall = document.getElementById('btnRestartInstall');
+    const updateStatus = document.getElementById('updateStatus');
 
+    function setUpdateStatus(text) {
+        updateStatus.textContent = text;
+    }
+
+    btnCheckUpdate.addEventListener('click', () => {
+        setUpdateStatus('Mengecek update...');
+        btnCheckUpdate.disabled = true;
+        window.desktop.checkForUpdate();
+    });
+
+    btnUpdateNow.addEventListener('click', () => {
+        window.desktop.downloadUpdate();
+        setUpdateStatus('Mengunduh...');
+        btnUpdateNow.disabled = true;
+    });
+
+    btnRestartInstall.addEventListener('click', () => {
+        window.desktop.installUpdate();
+    });
+
+    // Banner buttons
     btnUpdateDownload.addEventListener('click', () => {
         window.desktop.downloadUpdate();
         btnUpdateDownload.textContent = 'Mengunduh…';
         btnUpdateDownload.disabled = true;
     });
-
     btnUpdateInstall.addEventListener('click', () => {
         window.desktop.installUpdate();
     });
 
     window.desktop.onUpdateAvailable(info => {
+        // Banner
         updateBanner.style.display = 'flex';
         updateBannerText.textContent = 'Update v' + info.version + ' tersedia!';
         btnUpdateDownload.style.display = 'inline-block';
         btnUpdateDownload.textContent = 'Download';
         btnUpdateDownload.disabled = false;
         btnUpdateInstall.style.display = 'none';
+        // Settings
+        setUpdateStatus('v' + info.version + ' tersedia!');
+        btnCheckUpdate.style.display = 'none';
+        btnUpdateNow.style.display = 'inline-block';
+        btnUpdateNow.disabled = false;
+        btnRestartInstall.style.display = 'none';
     });
 
     window.desktop.onUpdateProgress(p => {
         updateBannerText.textContent = 'Mengunduh… ' + p.percent + '%';
-        btnUpdateDownload.style.display = 'inline-block';
         btnUpdateDownload.textContent = p.percent + '%';
+        setUpdateStatus('Mengunduh… ' + p.percent + '%');
+        btnUpdateNow.textContent = p.percent + '%';
     });
 
     window.desktop.onUpdateDownloaded(() => {
         updateBannerText.textContent = 'Update siap diinstall!';
         btnUpdateDownload.style.display = 'none';
         btnUpdateInstall.style.display = 'inline-block';
+        setUpdateStatus('Siap diinstall!');
+        btnUpdateNow.style.display = 'none';
+        btnRestartInstall.style.display = 'inline-block';
+    });
+
+    window.desktop.onUpdateNotAvailable(() => {
+        setUpdateStatus('Sudah versi terbaru.');
+        btnCheckUpdate.disabled = false;
     });
 }
 

@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('desktop', {
     getScriptFiles: () => ipcRenderer.invoke('scripts:list'),
     downloadUpdate: () => ipcRenderer.send('update:download'),
     installUpdate: () => ipcRenderer.send('update:install'),
+    checkForUpdate: () => ipcRenderer.send('update:check'),
     onUpdateAvailable: (cb) => ipcRenderer.on('update-available', (_, data) => cb(data)),
     onUpdateProgress: (cb) => ipcRenderer.on('update-progress', (_, data) => cb(data)),
     onUpdateDownloaded: (cb) => ipcRenderer.on('update-downloaded', () => cb()),
