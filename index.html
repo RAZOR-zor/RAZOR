@@ -785,6 +785,14 @@
         }
         .update-install:hover { background: #f9e784; }
 
+        #toast {
+            display: none; position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%);
+            background: #1a1a1a; color: #f4ebe1; padding: 10px 20px; border-radius: 8px;
+            font-size: 13px; font-weight: 500; z-index: 9999; opacity: 0;
+            transition: opacity 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        #toast.show { display: block; opacity: 1; }
+
         .bottom-bar {
             display: none;
             position: fixed;
@@ -1895,6 +1903,7 @@
     <div class="banner" id="banner"></div>
 
     <div class="table-wrap">
+        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;padding:8px 12px 4px;border-bottom:1px solid #1e293b;">Mingguan</div>
         <table>
             <thead>
                 <tr>
@@ -1905,6 +1914,152 @@
                 </tr>
             </thead>
             <tbody id="activityTable"></tbody>
+        </table>
+    </div>
+
+    <div class="table-wrap" style="margin-top:12px;">
+        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;padding:8px 12px 4px;border-bottom:1px solid #1e293b;">Harian</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Kegiatan</th>
+                    <th colspan="3">Pengaturan</th>
+                </tr>
+            </thead>
+            <tbody id="harianTable">
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Salat Malam</span></div></td>
+                    <td colspan="3"><select id="cfgMalAm" class="day-sel" style="min-width:140px;">
+                        <option value="00">Jangan Klik Isi</option>
+                        <option value="0">Tidak</option>
+                        <option value="2">2 Rakaat</option>
+                        <option value="4">4 Rakaat</option>
+                        <option value="8">8 Rakaat</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Subuh</span></div></td>
+                    <td colspan="3" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                        <select id="cfgSubuH_M" class="day-sel">
+                            <option value="1">Pelaksanaan</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                        <select id="cfgSubuH_B" class="day-sel">
+                            <option value="2">Berjamaah</option>
+                            <option value="1">Masbuk</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Zikir Pagi</span></div></td>
+                    <td colspan="3"><select id="cfgZikirPagi" class="day-sel" style="min-width:140px;">
+                        <option value="00">Jangan Klik Isi</option>
+                        <option value="1">Mendengarkan</option>
+                        <option value="2">Membaca</option>
+                        <option value="0">Tidak Melaksanakan</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Zuhur</span></div></td>
+                    <td colspan="3" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                        <select id="cfgZuhuR_M" class="day-sel">
+                            <option value="1">Pelaksanaan</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                        <select id="cfgZuhuR_B" class="day-sel">
+                            <option value="2">Berjamaah</option>
+                            <option value="1">Masbuk</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Asar</span></div></td>
+                    <td colspan="3" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                        <select id="cfgAsaR_M" class="day-sel">
+                            <option value="1">Pelaksanaan</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                        <select id="cfgAsaR_B" class="day-sel">
+                            <option value="2">Berjamaah</option>
+                            <option value="1">Masbuk</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Zikir Sore</span></div></td>
+                    <td colspan="3"><select id="cfgZikirSore" class="day-sel" style="min-width:140px;">
+                        <option value="00">Jangan Klik Isi</option>
+                        <option value="1">Mendengarkan</option>
+                        <option value="2">Membaca</option>
+                        <option value="0">Tidak Melaksanakan</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Magrib</span></div></td>
+                    <td colspan="3" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                        <select id="cfgMagriB_M" class="day-sel">
+                            <option value="1">Pelaksanaan</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                        <select id="cfgMagriB_B" class="day-sel">
+                            <option value="2">Berjamaah</option>
+                            <option value="1">Masbuk</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Isya</span></div></td>
+                    <td colspan="3" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                        <select id="cfgIsyA_M" class="day-sel">
+                            <option value="1">Pelaksanaan</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                        <select id="cfgIsyA_B" class="day-sel">
+                            <option value="2">Berjamaah</option>
+                            <option value="1">Masbuk</option>
+                            <option value="0">Tidak</option>
+                            <option value="00">Jangan Klik Isi</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Dhuha</span></div></td>
+                    <td colspan="3"><select id="cfgDhuha" class="day-sel" style="min-width:140px;">
+                        <option value="00">Jangan Klik Isi</option>
+                        <option value="2">2 Rakaat</option>
+                        <option value="4">4 Rakaat</option>
+                        <option value="8">8 Rakaat</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Tilawah</span></div></td>
+                    <td colspan="3"><select id="cfgTilawah" class="day-sel" style="min-width:140px;">
+                        <option value="00">Jangan Klik Isi</option>
+                        <option value="1">Melaksanakan</option>
+                        <option value="0">Tidak Melaksanakan</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td><div class="activity-cell"><span class="activity-name">Memilah Sampah</span></div></td>
+                    <td colspan="3"><select id="cfgMemilah" class="day-sel" style="min-width:140px;">
+                        <option value="1">Melaksanakan</option>
+                        <option value="0">Tidak Melaksanakan</option>
+                    </select></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
@@ -2066,6 +2221,8 @@
     </div>
 </div>
 
+<div id="toast"></div>
+
 <div class="bottom-bar">
     <div class="bottom-info">
         <span id="footCount"></span>
@@ -2108,6 +2265,7 @@
         <button type="button" class="open-browser" id="btnBack">Kembali</button>
         <button type="button" class="open-browser" id="btnRefresh">Refresh</button>
         <button type="button" class="open-browser" id="btnInjectScript">Inject Script</button>
+        <button type="button" class="open-browser" id="btnTandaTangan" style="background:#52b788;color:#0d3320;">Tanda Tangan</button>
     </div>
 </div>
 
@@ -2140,6 +2298,7 @@ let savePromise = null;
 let journalDirSet = true;
 let bootSettings = null;
 let appMode = 'jurnal';
+let prevAppMode = 'jurnal';
 let activeSoalFile = null;
 // SOAL_FILES — display names reflect bundled scripts in the script/ folder.
 // file = internal name sent to main process; display = what the user sees.
@@ -2176,6 +2335,7 @@ async function loadActivities() {
         activities = data.activities || [];
         activitiesProfile = id;
         renderTable();
+        loadHarianConfig();
         setToday();
         hideBanner();
         setSaveStatus('Siap', 'ok');
@@ -2191,6 +2351,45 @@ function setSaveStatus(text, kind) {
     const el = document.getElementById('saveStatus');
     el.textContent = text;
     el.className = 'save-status' + (kind ? ' ' + kind : '');
+}
+
+const HARIAN_FIELDS = ['cfgMalAm','cfgSubuH_M','cfgSubuH_B','cfgZikirPagi','cfgZuhuR_M','cfgZuhuR_B','cfgAsaR_M','cfgAsaR_B','cfgZikirSore','cfgMagriB_M','cfgMagriB_B','cfgIsyA_M','cfgIsyA_B','cfgDhuha','cfgTilawah','cfgMemilah'];
+const HARIAN_MAP = { cfgMalAm:'MALAM', cfgSubuH_M:'SUBUH_M', cfgSubuH_B:'SUBUH_B', cfgZikirPagi:'ZIKIR_PAGI', cfgZuhuR_M:'ZUHUR_M', cfgZuhuR_B:'ZUHUR_B', cfgAsaR_M:'ASAR_M', cfgAsaR_B:'ASAR_B', cfgZikirSore:'ZIKIR_SORE', cfgMagriB_M:'MAGRIB_M', cfgMagriB_B:'MAGRIB_B', cfgIsyA_M:'ISYA_M', cfgIsyA_B:'ISYA_B', cfgDhuha:'DHUHA', cfgTilawah:'TILAWAH', cfgMemilah:'MEMILAH' };
+
+async function loadHarianConfig() {
+    try {
+        const pid = activeProfile ? activeProfile.id : 0;
+        const r = await fetch('/api/harian?profile=' + pid);
+        const data = await r.json();
+        if (!data.ok) return;
+        const cfg = data.config || {};
+        HARIAN_FIELDS.forEach(id => {
+            const el = document.getElementById(id);
+            const key = HARIAN_MAP[id];
+            if (el && key && cfg[key] !== undefined) {
+                el.value = String(cfg[key]);
+            }
+        });
+    } catch (_) { }
+}
+
+async function saveHarianConfig() {
+    const cfg = {};
+    HARIAN_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        const key = HARIAN_MAP[id];
+        if (el && key) {
+            cfg[key] = el.value;
+        }
+    });
+    try {
+        const pid = activeProfile ? activeProfile.id : 0;
+        await fetch('/api/harian?profile=' + pid, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ config: cfg })
+        });
+    } catch (_) { }
 }
 
 function scheduleSave() {
@@ -2313,6 +2512,35 @@ function escapeHtml(text) {
         .replace(/'/g, '&#039;');
 }
 let WEEKS = [];
+let _navEnforcing = false;
+
+function isJournalWeeklyUrl(url) {
+    try { return new URL(url).pathname.includes('/student/journal-weekly'); } catch (_) { return false; }
+}
+function enforceNavigation(tab, currentUrl) {
+    if (_navEnforcing || !tab || !tab.webview) return;
+    let url = currentUrl;
+    if (!url) {
+        try { url = tab.webview.getURL(); } catch (_) { return; }
+    }
+    if (!url) return;
+    if (appMode === 'jurnal') {
+        if (!isJournalWeeklyUrl(url)) {
+            const weekUrl = WEEKS[tab.week] || WEEKS[0];
+            if (weekUrl) {
+                _navEnforcing = true;
+                try { tab.webview.loadURL(weekUrl); } catch (_) {}
+                setTimeout(() => { _navEnforcing = false; }, 1500);
+            }
+        }
+    } else if (appMode === 'soal') {
+        if (isJournalWeeklyUrl(url)) {
+            _navEnforcing = true;
+            try { tab.webview.loadURL('https://app.kejar.id/student/new-dashboard'); } catch (_) {}
+            setTimeout(() => { _navEnforcing = false; }, 1500);
+        }
+    }
+}
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
 
@@ -2339,11 +2567,27 @@ function setupDesktop() {
     document.getElementById('btnMax').addEventListener('click', () => window.desktop.maximize());
     document.getElementById('btnClose').addEventListener('click', () => window.desktop.close());
     document.getElementById('btnBack').addEventListener('click', () => {
-        if (activeTab) activeTab.webview.src = 'https://app.kejar.id';
+        if (activeTab && activeTab.webview) {
+            activeTab.webview.src = 'https://app.kejar.id/student/new-dashboard';
+        }
     });
     document.getElementById('btnRefresh').addEventListener('click', () => window.desktop.refreshPage());
     document.getElementById('btnInjectScript').addEventListener('click', () => {
         window.desktop.injectScript(activeProfile ? activeProfile.id : undefined);
+    });
+    document.getElementById('btnTandaTangan').addEventListener('click', async () => {
+        if (!activeProfile) return;
+        try {
+            const creds = await window.desktop.getCredentials(activeProfile.name);
+            if (creds && (creds.username || creds.password)) {
+                window.desktop.tandaTangan(creds.username, creds.password);
+            } else {
+                showToast('Tidak ada nama akun "' + activeProfile.name + '" di catatan');
+                window.desktop.tandaTangan('', '');
+            }
+        } catch (_) {
+            window.desktop.tandaTangan('', '');
+        }
     });
     document.getElementById('btnSettings').addEventListener('click', openSettings);
 
@@ -2478,6 +2722,14 @@ async function applyJournalDir(dir) {
     }
 }
 
+function showToast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
 async function openSettings() {
     if (!window.desktop) return;
     try {
@@ -2511,9 +2763,11 @@ function syncModeUI() {
 }
 
 function setAppMode(mode) {
+    prevAppMode = appMode;
     appMode = mode === 'soal' ? 'soal' : 'jurnal';
     syncModeUI();
     applyMode();
+    if (activeTab) enforceNavigation(activeTab);
     return appMode;
 }
 
@@ -2860,6 +3114,8 @@ function applyMode() {
     const babakGroup = document.getElementById('babakPillGroup');
     const bottomInfo = document.querySelector('.bottom-info');
     const injectBtn = document.getElementById('btnInjectScript');
+    const tandaTanganBtn = document.getElementById('btnTandaTangan');
+    const backBtn = document.getElementById('btnBack');
     const titleEl = document.getElementById('titlebarTitle');
     if (!table || !panel) return;
     const soal = appMode === 'soal';
@@ -2870,6 +3126,8 @@ function applyMode() {
     if (babakGroup) babakGroup.hidden = true;
     if (bottomInfo) bottomInfo.hidden = soal;
     if (injectBtn) injectBtn.hidden = soal;
+    if (tandaTanganBtn) tandaTanganBtn.hidden = soal;
+    if (backBtn) backBtn.hidden = !soal;
     if (titleEl) titleEl.textContent = soal ? 'Soal' : 'RAZOR';
     const mastEl = document.getElementById('mastheadTitle');
     if (mastEl) mastEl.textContent = soal ? 'Soal' : 'RAZOR';
@@ -3148,6 +3406,7 @@ function activateProfile(p) {
     renderSoalInjectTabs();
     saveProfiles();
     if (journalDirSet) loadActivities();
+    if (activeTab) setTimeout(() => enforceNavigation(activeTab), 500);
 }
 
 function createProfile(week, rec) {
@@ -3188,7 +3447,7 @@ function createTab(week, profile) {
     if (p.tabs.length >= MAX_TABS) return null;
     const host = document.getElementById('webviewHost');
     const webview = document.createElement('webview');
-    const soalUrl = appMode === 'soal' ? 'https://app.kejar.id/' : (WEEKS[week] || 'https://app.kejar.id/');
+    const soalUrl = appMode === 'soal' ? 'https://app.kejar.id/student/new-dashboard' : (WEEKS[week] || 'https://app.kejar.id/student/new-dashboard');
     webview.setAttribute('src', soalUrl);
     webview.setAttribute('partition', p.partition);
     webview.setAttribute('useragent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36');
@@ -3220,6 +3479,7 @@ function createTab(week, profile) {
         }
     });
     webview.addEventListener('did-navigate', e => {
+        if (tab === activeTab) enforceNavigation(tab, e.url);
         try {
             const p = new URL(e.url).searchParams;
             const s = p.get('weekStartDate');
@@ -3424,6 +3684,11 @@ function initWeekPicker() {
     document.getElementById('btnCloseSettings').addEventListener('click', closeSettings);
     document.getElementById('btnDoneSettings').addEventListener('click', closeSettings);
     document.getElementById('btnMoveJournalDir').addEventListener('click', moveJournalDir);
+
+    HARIAN_FIELDS.forEach(id => {
+        const sel = document.getElementById(id);
+        if (sel) sel.addEventListener('change', saveHarianConfig);
+    });
     document.getElementById('modeSeg').addEventListener('click', e => {
         const btn = e.target.closest('.mode-seg-btn');
         if (!btn) return;

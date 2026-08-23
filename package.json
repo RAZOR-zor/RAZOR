@@ -1,14 +1,13 @@
 {
   "name": "razor",
-  "version": "1.0.3",
+  "version": "1.0.1",
   "private": true,
   "description": "RAZOR - Kegiatan Mingguan Otomatis",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "web": "node server.js",
-    "dist": "electron-builder --win",
-    "dist:portable": "electron-builder --win portable"
+    "dist": "electron-builder --win"
   },
   "devDependencies": {
     "electron": "^31.7.7",

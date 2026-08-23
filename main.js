@@ -83,17 +83,17 @@ function ensureBaseJournal() {
     const base = path.join(dir, 'jurnal.js');
     try {
         fs.mkdirSync(dir, { recursive: true });
-        if (!fs.existsSync(base)) {
-            const template = path.join(__dirname, 'jurnal.js');
-            if (fs.existsSync(template)) {
-                const content = fs.readFileSync(template, 'utf8');
-                fs.writeFileSync(base, content, 'utf8');
-            }
+        const template = path.join(__dirname, 'jurnal.js');
+        if (fs.existsSync(template)) {
+            const content = fs.readFileSync(template, 'utf8');
+            fs.writeFileSync(base, content, 'utf8');
         }
     } catch (err) {
         console.error('Siapkan jurnal.js gagal:', err.message);
     }
 }
+
+
 
 function waitForServer(url, tries) {
     return new Promise(resolve => {
@@ -202,11 +202,14 @@ function loadScriptContent(profileId) {
         } catch (_) { }
     }
     try {
-        return fs.readFileSync(file, 'utf8');
+        let script = fs.readFileSync(file, 'utf8');
+        return script;
     } catch (e) {
         return '';
     }
 }
+
+
 
 function injectScriptInto(contents, profileId) {
     const script = loadScriptContent(profileId);
@@ -425,6 +428,43 @@ ipcMain.on('win:inject-script', (e, profileId) => {
     }
 });
 
+ipcMain.on('win:tanda-tangan', (e, username, password) => {
+    const contents = activeContents || kejarContents;
+    if (!contents) return;
+    const user = (username || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    const pass = (password || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    const script = `
+        (function() {
+            const btnTandaTangan = document.querySelector('.signature-box-button[data-role="teacher"]');
+            if (btnTandaTangan) {
+                btnTandaTangan.click();
+                setTimeout(() => {
+                    const inputUser = document.getElementById('username-sign-teacher');
+                    const inputPass = document.getElementById('password-sign-teacher');
+                    const btnSimpan = document.getElementById('signStudent');
+                    if (inputUser && inputPass && btnSimpan) {
+                        if ('${user}') {
+                            inputUser.value = '${user}';
+                            inputUser.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                        if ('${pass}') {
+                            inputPass.value = '${pass}';
+                            inputPass.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                        btnSimpan.click();
+                    }
+                }, 500);
+            }
+        })();
+    `;
+    const isLoaded = contents.getURL() !== '' && !contents.isLoading();
+    if (isLoaded) {
+        contents.executeJavaScript(script).catch(err => {});
+    } else {
+        contents.once('did-finish-load', () => contents.executeJavaScript(script).catch(err => {}));
+    }
+});
+
 ipcMain.on('win:inject-soal-script', (e, fileName) => {
     const contents = activeContents || kejarContents;
     if (!contents) return;
@@ -551,6 +591,29 @@ ipcMain.handle('catatan:save', (e, text) => {
         fs.writeFileSync(catatanFile(), text || '', 'utf8');
         return true;
     } catch (_) { return false; }
+});
+
+ipcMain.handle('catatan:get-credentials', (e, profileName) => {
+    try {
+        const file = catatanFile();
+        if (!fs.existsSync(file)) return null;
+        const text = fs.readFileSync(file, 'utf8');
+        const entries = text.split(/-----------------------------------------/);
+        for (const entry of entries) {
+            const namaMatch = entry.match(/Nama\s*:\s*(.+)/i);
+            if (!namaMatch) continue;
+            const nama = namaMatch[1].trim();
+            if (nama.toLowerCase() !== profileName.toLowerCase()) continue;
+            const userMatch = entry.match(/Username\s*:\s*(.+)/i);
+            const passMatch = entry.match(/Password\s*:\s*(.+)/i);
+            return {
+                nama: nama,
+                username: userMatch ? userMatch[1].trim() : '',
+                password: passMatch ? passMatch[1].trim() : ''
+            };
+        }
+    } catch (_) { }
+    return null;
 });
 
 ipcMain.handle('catatan:export', async (e, text) => {

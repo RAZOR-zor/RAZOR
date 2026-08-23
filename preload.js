@@ -5,6 +5,8 @@ contextBridge.exposeInMainWorld('desktop', {
     maximize: () => ipcRenderer.send('win:maximize'),
     close: () => ipcRenderer.send('win:close'),
     injectScript: (profileId) => ipcRenderer.send('win:inject-script', profileId),
+    tandaTangan: (username, password) => ipcRenderer.send('win:tanda-tangan', username, password),
+    getCredentials: (profileName) => ipcRenderer.invoke('catatan:get-credentials', profileName),
     injectSoalScript: (fileName) => ipcRenderer.send('win:inject-soal-script', fileName),
     setSoalAutoInject: (enabled, contentsId, fileName) => ipcRenderer.send('win:set-soal-auto-inject', enabled, contentsId, fileName),
     deleteProfileFile: (profileId) => ipcRenderer.send('win:delete-profile-file', profileId),
