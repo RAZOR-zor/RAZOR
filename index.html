@@ -8,18 +8,71 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'BigParty';
+            src: url('font/BigPartyC2-Blue.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+    <style>
         :root {
-            --bg: #141310;
-            --surface: #1D1B17;
-            --surface-2: #24211C;
-            --ink: #ECE8E0;
-            --muted: #8B867B;
-            --line: #2C2923;
-            --accent: #7DB494;
-            --accent-soft: rgba(125, 180, 148, .16);
-            --accent-warm: #C8A878;
-            --accent-warm-soft: rgba(200, 168, 120, .16);
-            --placeholder: #6A655C;
+            color-scheme: dark;
+            --bg: #282c34;
+            --bg-rgb: 40, 44, 52;
+            --surface: #21252b;
+            --surface-2: #2c313a;
+            --ink: #abb2bf;
+            --muted: #828997;
+            --line: #3e4451;
+            --accent: #98c379;
+            --accent-rgb: 152, 195, 121;
+            --accent-soft: rgba(var(--accent-rgb), .16);
+            --accent-warm: #e5c07b;
+            --accent-warm-rgb: 229, 192, 123;
+            --accent-warm-soft: rgba(var(--accent-warm-rgb), .16);
+            --accent-text: #282c34;
+            --placeholder: #5c6370;
+            --masthead-grad: #2c313a;
+            --panel-bg: #1e2227;
+            --chip-bg: #353b45;
+            --border-strong: #454b54;
+            --input-dark: #1d2025;
+            --overlay-bg: #21252b;
+            --gold-grad-a: #e5c07b;
+            --gold-grad-b: #d19a66;
+            --gold-text: #282c34;
+            --label-muted: #9da5b4;
+            --label-line: #3e4451;
+        }
+
+        body.theme-one-dark {
+            --bg: #282c34;
+            --bg-rgb: 40, 44, 52;
+            --surface: #21252b;
+            --surface-2: #2c313a;
+            --ink: #abb2bf;
+            --muted: #828997;
+            --line: #3e4451;
+            --accent: #98c379;
+            --accent-rgb: 152, 195, 121;
+            --accent-soft: rgba(var(--accent-rgb), .16);
+            --accent-warm: #e5c07b;
+            --accent-warm-rgb: 229, 192, 123;
+            --accent-warm-soft: rgba(var(--accent-warm-rgb), .16);
+            --accent-text: #282c34;
+            --placeholder: #5c6370;
+            --masthead-grad: #2c313a;
+            --panel-bg: #1e2227;
+            --chip-bg: #353b45;
+            --border-strong: #454b54;
+            --input-dark: #1d2025;
+            --overlay-bg: #21252b;
+            --gold-grad-a: #e5c07b;
+            --gold-grad-b: #d19a66;
+            --gold-text: #282c34;
+            --label-muted: #9da5b4;
+            --label-line: #3e4451;
         }
 
         * { box-sizing: border-box; }
@@ -55,22 +108,14 @@
             flex-wrap: wrap;
             margin-bottom: 28px;
             padding: 24px;
-            background: linear-gradient(160deg, #1E241F 0%, var(--surface) 55%);
+            background: linear-gradient(160deg, var(--masthead-grad) 0%, var(--surface) 55%);
             border: 1px solid var(--line);
             border-radius: 18px;
             overflow: hidden;
         }
 
         .masthead::before {
-            content: "";
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            right: -100px;
-            top: -120px;
-            background: radial-gradient(circle, var(--accent-warm-soft) 0%, transparent 70%);
-            pointer-events: none;
-            animation: breathe 8s ease-in-out infinite;
+            display: none;
         }
 
         @keyframes breathe {
@@ -173,14 +218,14 @@
 
         .soal-card:hover {
             transform: translateY(-2px);
-            border-color: #3A362E;
+            border-color: var(--border-strong);
             box-shadow: 0 6px 18px rgba(0, 0, 0, .22);
         }
 
         .soal-card.active {
             border-color: var(--accent-warm);
-            background: linear-gradient(180deg, rgba(200, 168, 120, .12), rgba(200, 168, 120, .04) 60%);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, .28), inset 0 0 0 1px rgba(200, 168, 120, .25);
+            background: linear-gradient(180deg, rgba(var(--accent-warm-rgb), .12), rgba(var(--accent-warm-rgb), .04) 60%);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .28), inset 0 0 0 1px rgba(var(--accent-warm-rgb), .25);
         }
 
         .soal-card-icon {
@@ -189,7 +234,7 @@
             width: 38px;
             height: 38px;
             border-radius: 11px;
-            background: #151713;
+            background: var(--panel-bg);
             border: 1px solid var(--line);
             color: var(--accent-warm);
             transition: background .16s ease, color .16s ease;
@@ -198,8 +243,8 @@
         .soal-card-icon svg { width: 19px; height: 19px; }
 
         .soal-card.active .soal-card-icon {
-            background: linear-gradient(180deg, #D6B488, #B9966A);
-            color: #151713;
+            background: linear-gradient(180deg, var(--gold-grad-a), var(--gold-grad-b));
+            color: var(--gold-text);
         }
 
         .soal-card-name {
@@ -225,7 +270,7 @@
             border-radius: 50%;
             font-size: 12px;
             background: var(--accent-warm);
-            color: #151713;
+            color: var(--gold-text);
             opacity: 0;
             transform: scale(.6);
             transition: opacity .16s ease, transform .16s ease;
@@ -308,7 +353,7 @@
             height: 19px;
             border: 1px solid var(--line);
             border-radius: 999px;
-            background: #2A2822;
+            background: var(--chip-bg);
             cursor: pointer;
             transition: background .16s ease, border-color .16s ease;
         }
@@ -325,13 +370,13 @@
         }
 
         .switch[aria-checked="true"] {
-            background: linear-gradient(180deg, #D6B488, #B9966A);
+            background: linear-gradient(180deg, var(--gold-grad-a), var(--gold-grad-b));
             border-color: var(--accent-warm);
         }
 
         .switch[aria-checked="true"] .switch-knob {
             transform: translateX(15px);
-            background: #151713;
+            background: var(--gold-text);
         }
 
         @media (max-width: 520px) {
@@ -403,20 +448,46 @@
             -webkit-appearance: none;
             font: inherit;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: .01em;
             color: var(--ink);
-            background-color: var(--bg);
+            background-color: var(--surface-2);
             border: 1px solid var(--line);
-            border-radius: 8px;
-            padding: 6px 24px 6px 10px;
+            border-radius: 10px;
+            padding: 7px 30px 7px 12px;
             cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238B867B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23828997' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 8px center;
-            transition: border-color .15s;
+            background-position: right 10px center;
+            transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 1px 2px rgba(0,0,0,.25);
         }
 
-        .day-sel:hover { border-color: var(--muted); }
+        .day-sel:hover {
+            border-color: var(--accent-warm);
+            background-color: var(--surface);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 3px 10px rgba(0,0,0,.3);
+        }
+
+        .day-sel:focus {
+            outline: none;
+            border-color: var(--accent-warm);
+            box-shadow: 0 0 0 3px var(--accent-warm-soft), 0 3px 10px rgba(0,0,0,.3);
+        }
+
+        .day-sel option {
+            background: var(--surface-2);
+            color: var(--ink);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 12px;
+        }
+
+        .day-sel option:checked {
+            background: var(--accent-warm);
+            color: var(--bg);
+            font-weight: 600;
+        }
 
         .seg {
             display: inline-flex;
@@ -533,7 +604,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(10, 10, 8, .62);
+            background: rgba(var(--bg-rgb), .62);
             backdrop-filter: blur(6px);
         }
 
@@ -541,7 +612,7 @@
 
         .setup-card {
             width: min(470px, calc(100vw - 48px));
-            background: #1E241F;
+            background: var(--masthead-grad);
             border: 1px solid var(--line);
             border-radius: 16px;
             padding: 30px 28px;
@@ -605,10 +676,34 @@
             margin-bottom: 6px;
         }
 
+        .psp-name-input {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            background: var(--panel-bg);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            color: var(--text);
+            outline: none;
+            transition: border-color .15s;
+            box-sizing: border-box;
+        }
+
+        .psp-name-input:focus {
+            border-color: var(--accent);
+        }
+
+        .psp-tab-count {
+            font-size: 13px;
+            color: var(--muted);
+            padding: 6px 0;
+        }
+
         .settings-path {
             font-size: 13px;
             font-family: 'Inter', monospace;
-            background: #151713;
+            background: var(--panel-bg);
             border: 1px solid var(--line);
             border-radius: 10px;
             padding: 10px 12px;
@@ -632,7 +727,7 @@
             display: flex;
             gap: 4px;
             padding: 4px;
-            background: #151713;
+            background: var(--panel-bg);
             border: 1px solid var(--line);
             border-radius: 12px;
         }
@@ -664,8 +759,8 @@
         .mode-seg-btn:hover { color: var(--ink); }
 
         .mode-seg-btn.active {
-            color: #151713;
-            background: linear-gradient(180deg, #D6B488, #B9966A);
+            color: var(--gold-text);
+            background: linear-gradient(180deg, var(--gold-grad-a), var(--gold-grad-b));
             box-shadow: 0 2px 10px rgba(0, 0, 0, .3);
         }
 
@@ -683,7 +778,7 @@
             align-items: center;
             justify-content: space-between;
             padding-left: 18px;
-            background: #181613;
+            background: var(--input-dark);
             border-bottom: 1px solid var(--line);
             -webkit-app-region: drag;
             user-select: none;
@@ -758,36 +853,9 @@
 
         body.desktop .titlebar { display: flex; }
 
-        .update-banner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            left: 0; right: 0; bottom: 52px;
-            z-index: 60;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #1a472a, #0d3320);
-            border-top: 1px solid #2d6a4f;
-            color: #b7e4c7;
-            font-size: 13px;
-        }
-        .update-banner-actions { display: flex; gap: 8px; }
-        .update-btn {
-            border: none; border-radius: 6px; padding: 6px 14px;
-            font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s;
-        }
-        .update-download {
-            background: #52b788; color: #0d3320;
-        }
-        .update-download:hover { background: #74c69d; }
-        .update-install {
-            background: #f4d35e; color: #1a1a1a;
-        }
-        .update-install:hover { background: #f9e784; }
-
         #toast {
             display: none; position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%);
-            background: #1a1a1a; color: #f4ebe1; padding: 10px 20px; border-radius: 8px;
+            background: #2c313a; color: #abb2bf; border: 1px solid #3e4451; padding: 10px 20px; border-radius: 8px;
             font-size: 13px; font-weight: 500; z-index: 9999; opacity: 0;
             transition: opacity 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
@@ -801,7 +869,7 @@
             bottom: 0;
             z-index: 50;
             padding: 10px 20px;
-            background: rgba(20, 19, 16, .92);
+            background: rgba(var(--bg-rgb), .92);
             backdrop-filter: blur(8px);
             border-top: 1px solid var(--line);
             justify-content: space-between;
@@ -822,11 +890,44 @@
 
         .bottom-info .save-status { font-size: 12.5px; }
 
+        .mode-indicator {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            background: rgba(152, 195, 121, .15);
+            color: #98c379;
+            transition: background .2s, color .2s;
+            flex-shrink: 0;
+        }
+
+        .mode-indicator.soal {
+            background: rgba(97, 175, 239, .15);
+            color: #61afef;
+        }
+
         .bottom-actions {
             display: flex;
             align-items: center;
             gap: 8px;
             margin-left: auto;
+        }
+
+        .zoom-btn {
+            min-width: 32px !important;
+            padding: 0 8px !important;
+            font-size: 16px !important;
+            font-weight: 700 !important;
+        }
+
+        .zoom-label {
+            font-size: 12px;
+            color: var(--muted);
+            min-width: 40px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .week-pill-group {
@@ -945,7 +1046,7 @@
             z-index: 60;
             display: flex;
             flex-direction: column;
-            background: rgba(20, 19, 16, .94);
+            background: rgba(var(--bg-rgb), .94);
             backdrop-filter: blur(10px);
             border-right: 1px solid var(--line);
             border-top: 1px solid var(--line);
@@ -968,7 +1069,7 @@
             gap: 12px;
             padding: 18px 20px 14px;
             border-bottom: 1px solid var(--line);
-            background: linear-gradient(160deg, #1E241F 0%, transparent 60%);
+            background: linear-gradient(160deg, var(--masthead-grad) 0%, transparent 60%);
         }
 
         .wp-title {
@@ -1090,7 +1191,7 @@
         .wp-tile.cur .tile-check {
             border-color: var(--accent);
             background: var(--accent);
-            color: #0E1411;
+            color: var(--accent-text);
         }
 
         .tile-today {
@@ -1100,7 +1201,7 @@
             text-transform: uppercase;
             color: var(--accent);
             background: var(--accent-soft);
-            border: 1px solid rgba(125, 180, 148, .3);
+            border: 1px solid rgba(var(--accent-rgb), .3);
             padding: 2px 7px;
             border-radius: 99px;
         }
@@ -1223,349 +1324,90 @@
             .sheet { padding: 34px 16px 48px; }
             h1 { font-size: 27px; }
             .masthead { flex-direction: column; align-items: flex-start; gap: 20px; padding: 28px; }
-            .ghost-wrap { margin: 0 auto; width: 110px; height: 110px; }
         }
 
-        .ghost-wrap {
-            flex: none;
+        .mast-icon-area {
+            flex-shrink: 0;
             position: relative;
-            width: 132px;
-            height: 132px;
-            animation: fadeUp .6s ease .15s both;
         }
 
-        .ghost-wrap.hidden-anim { display: none; }
-
-        #ghost {
-            position: relative;
-            scale: 0.8;
+        .mast-icon {
+            width: 70px;
+            height: 70px;
+            display: block;
+            opacity: 0;
         }
 
-        /* Capybara loader */
-        .capy-wrap {
-            flex: none;
-            position: relative;
-            width: 132px;
-            height: 132px;
-            animation: fadeUp .6s ease .15s both;
-            overflow: hidden;
+        .mast-trail {
+            width: 3px;
+            height: 0;
+            background: #98c379;
+            border-radius: 2px;
+            flex-shrink: 0;
+            margin: 0 12px;
+            opacity: 0;
         }
-        .capy-wrap.hidden-anim { display: none; }
 
-        .capybaraloader {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            --color: rgb(204, 125, 45);
-            --color2: rgb(83, 56, 28);
-            transform: scale(0.58);
-            transform-origin: center center;
+        .mast-title {
+            font-family: 'BigParty', sans-serif;
+            font-size: 120px;
+            color: #98c379;
+            letter-spacing: 0.05em;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            gap: 2px;
+            line-height: 1;
+        }
+
+        .mast-brand {
+            display: flex;
             align-items: center;
-        }
-        .capybara-c { width: 14em; height: 7.5em; position: relative; z-index: 1; }
-        .capy-loader-line { width: 14em; height: 2.5em; position: relative; z-index: 1; overflow: hidden; }
-        .capy-body { width: 85%; height: 100%; background: linear-gradient(var(--color), 90%, var(--color2)); border-radius: 45%; position: relative; z-index: 1; animation: movebody 1s linear infinite; }
-        .capy-head { width: 7.5em; height: 7em; bottom: 0; right: 0; position: absolute; background-color: var(--color); z-index: 3; border-radius: 3.5em; box-shadow: -1em 0 var(--color2); animation: movebody 1s linear infinite; }
-        .capy-ear { width: 2em; height: 2em; background: linear-gradient(-45deg, var(--color), 90%, var(--color2)); top: 0; left: 0; border-radius: 100%; position: absolute; overflow: hidden; z-index: 3; }
-        .capy-ear:nth-child(2) { left: 5em; background: linear-gradient(25deg, var(--color), 90%, var(--color2)); }
-        .capy-ear-inner { width: 100%; height: 1em; background-color: var(--color2); bottom: 0; left: 0.5em; border-radius: 100%; position: absolute; transform: rotate(-45deg); }
-        .capy-mouth { width: 3.5em; height: 2em; background-color: var(--color2); position: absolute; bottom: 0; left: 2.5em; border-radius: 50%; display: flex; justify-content: space-around; align-items: center; padding: 0.5em; }
-        .capy-lip { width: 0.25em; height: 0.75em; border-radius: 100%; transform: rotate(-45deg); background-color: var(--color); }
-        .capy-lip:nth-child(2) { transform: rotate(45deg); }
-        .capy-eye { width: 2em; height: 0.5em; background-color: var(--color2); position: absolute; bottom: 3.5em; left: 1.5em; border-radius: 5em; transform: rotate(45deg); }
-        .capy-eye:nth-child(4) { transform: rotate(-45deg); left: 5.5em; width: 1.75em; }
-        .capy-leg { width: 6em; height: 5em; bottom: 0; left: 0; position: absolute; background: linear-gradient(var(--color), 95%, var(--color2)); z-index: 2; border-radius: 2em; animation: movebody 1s linear infinite; }
-        .capy-leg2 { width: 1.75em; height: 3em; bottom: 0; left: 3.25em; position: absolute; background: linear-gradient(var(--color), 80%, var(--color2)); z-index: 2; border-radius: 0.75em; box-shadow: inset 0 -0.5em var(--color2); animation: moveleg 1s linear infinite; }
-        .capy-leg2:nth-child(3) { width: 1.25em; left: 0.5em; height: 2em; animation: moveleg2 1s linear infinite 0.075s; }
-        .capy-dash { width: 50em; height: 0.5em; border-top: 0.5em dashed var(--color2); animation: moveline 10s linear infinite; }
-
-        @keyframes movebody { 0% { transform: translateX(0%); } 50% { transform: translateX(2%); } 100% { transform: translateX(0%); } }
-        @keyframes moveleg { 0% { transform: rotate(-45deg) translateX(-5%); } 50% { transform: rotate(45deg) translateX(5%); } 100% { transform: rotate(-45deg) translateX(-5%); } }
-        @keyframes moveleg2 { 0% { transform: rotate(45deg); } 50% { transform: rotate(-45deg); } 100% { transform: rotate(45deg); } }
-        @keyframes moveline { 0% { transform: translateX(0%); opacity: 0%; } 5% { opacity: 100%; } 95% { opacity: 100%; } 100% { transform: translateX(-70%); opacity: 0%; } }
-
-        #red {
-            animation: upNDown infinite 0.5s;
             position: relative;
-            width: 140px;
-            height: 140px;
-            display: grid;
-            grid-template-columns: repeat(14, 1fr);
-            grid-template-rows: repeat(14, 1fr);
-            grid-column-gap: 0px;
-            grid-row-gap: 0px;
-            grid-template-areas:
-                "a1  a2  a3  a4  a5  top0  top0  top0  top0  a10 a11 a12 a13 a14"
-                "b1  b2  b3  top1 top1 top1 top1 top1 top1 top1 top1 b12 b13 b14"
-                "c1 c2 top2 top2 top2 top2 top2 top2 top2 top2 top2 top2 c13 c14"
-                "d1 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 d14"
-                "e1 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 e14"
-                "f1 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 top3 f14"
-                "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
-                "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
-                "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
-                "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
-                "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
-                "top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4 top4"
-                "st0 st0 an4 st1 an7 st2 an10 an10 st3 an13 st4 an16 st5 st5"
-                "an1 an2 an3 an5 an6 an8 an9 an9 an11 an12 an14 an15 an17 an18";
+            margin-right: auto;
         }
 
-        @keyframes upNDown {
-            0%,
-            49% {
-                transform: translateY(0px);
-            }
-            50%,
-            100% {
-                transform: translateY(-10px);
-            }
+        .mast-char-group {
+            display: inline-block;
+            position: relative;
         }
 
-        #top0,
-        #top1,
-        #top2,
-        #top3,
-        #top4,
-        #st0,
-        #st1,
-        #st2,
-        #st3,
-        #st4,
-        #st5 {
-            background-color: var(--accent-warm);
+        .mast-char-wrap {
+            display: inline-block;
         }
 
-        #top0 { grid-area: top0; }
-        #top1 { grid-area: top1; }
-        #top2 { grid-area: top2; }
-        #top3 { grid-area: top3; }
-        #top4 { grid-area: top4; }
-        #st0 { grid-area: st0; }
-        #st1 { grid-area: st1; }
-        #st2 { grid-area: st2; }
-        #st3 { grid-area: st3; }
-        #st4 { grid-area: st4; }
-        #st5 { grid-area: st5; }
-
-        #an1 {
-            grid-area: an1;
-            animation: flicker0 infinite 0.5s;
+        .mast-char {
+            display: inline-block;
         }
 
-        #an18 {
-            grid-area: an18;
-            animation: flicker0 infinite 0.5s;
-        }
-
-        #an2 {
-            grid-area: an2;
-            animation: flicker1 infinite 0.5s;
-        }
-
-        #an17 {
-            grid-area: an17;
-            animation: flicker1 infinite 0.5s;
-        }
-
-        #an3 {
-            grid-area: an3;
-            animation: flicker1 infinite 0.5s;
-        }
-
-        #an16 {
-            grid-area: an16;
-            animation: flicker1 infinite 0.5s;
-        }
-
-        #an4 {
-            grid-area: an4;
-            animation: flicker1 infinite 0.5s;
-        }
-
-        #an15 {
-            grid-area: an15;
-            animation: flicker1 infinite 0.5s;
-        }
-
-        #an6 {
-            grid-area: an6;
-            animation: flicker0 infinite 0.5s;
-        }
-
-        #an12 {
-            grid-area: an12;
-            animation: flicker0 infinite 0.5s;
-        }
-
-        #an7 {
-            grid-area: an7;
-            animation: flicker0 infinite 0.5s;
-        }
-
-        #an13 {
-            grid-area: an13;
-            animation: flicker0 infinite 0.5s;
-        }
-
-        #an9 {
-            grid-area: an9;
-            animation: flicker1 infinite 0.5s;
-        }
-
-        #an10 {
-            grid-area: an10;
-            animation: flicker1 infinite 0.5s;
-        }
-
-        #an8 {
-            grid-area: an8;
-            animation: flicker0 infinite 0.5s;
-        }
-
-        #an11 {
-            grid-area: an11;
-            animation: flicker0 infinite 0.5s;
-        }
-
-        @keyframes flicker0 {
-            0%,
-            49% {
-                background-color: var(--accent-warm);
-            }
-            50%,
-            100% {
-                background-color: transparent;
-            }
-        }
-
-        @keyframes flicker1 {
-            0%,
-            49% {
-                background-color: transparent;
-            }
-            50%,
-            100% {
-                background-color: var(--accent-warm);
-            }
-        }
-
-        #eye {
-            width: 40px;
-            height: 50px;
+        .mast-line-wrap {
             position: absolute;
-            top: 30px;
-            left: 10px;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
         }
 
-        #eye::before {
-            content: "";
-            background-color: white;
-            width: 20px;
-            height: 50px;
-            transform: translateX(10px);
-            display: block;
-            position: absolute;
+        .mast-underline {
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #61afef, #56b6c2);
+            border-radius: 2px;
         }
 
-        #eye::after {
-            content: "";
-            background-color: white;
-            width: 40px;
-            height: 30px;
-            transform: translateY(10px);
-            display: block;
+        .mast-smoke-layer {
             position: absolute;
-        }
-
-        #eye1 {
-            width: 40px;
-            height: 50px;
-            position: absolute;
-            top: 30px;
-            right: 30px;
-        }
-
-        #eye1::before {
-            content: "";
-            background-color: white;
-            width: 20px;
-            height: 50px;
-            transform: translateX(10px);
-            display: block;
-            position: absolute;
-        }
-
-        #eye1::after {
-            content: "";
-            background-color: white;
-            width: 40px;
-            height: 30px;
-            transform: translateY(10px);
-            display: block;
-            position: absolute;
-        }
-
-        #pupil {
-            width: 20px;
-            height: 20px;
-            background-color: #2B3A6E;
-            position: absolute;
-            top: 50px;
-            left: 10px;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 1;
-            animation: eyesMovement infinite 3s;
+            pointer-events: none;
         }
 
-        #pupil1 {
-            width: 20px;
-            height: 20px;
-            background-color: #2B3A6E;
-            position: absolute;
-            top: 50px;
-            right: 50px;
-            z-index: 1;
-            animation: eyesMovement infinite 3s;
-        }
-
-        @keyframes eyesMovement {
-            0%,
-            49% {
-                transform: translateX(0px);
-            }
-            50%,
-            99% {
-                transform: translateX(10px);
-            }
-            100% {
-                transform: translateX(0px);
-            }
-        }
-
-        #shadow {
-            background-color: black;
-            width: 140px;
-            height: 140px;
+        .mast-puff {
             position: absolute;
             border-radius: 50%;
-            transform: rotateX(80deg);
-            filter: blur(20px);
-            top: 80%;
-            animation: shadowMovement infinite 0.5s;
-        }
-
-        @keyframes shadowMovement {
-            0%,
-            49% {
-                opacity: 0.5;
-            }
-            50%,
-            100% {
-                opacity: 0.2;
-            }
+            background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 70%);
+            pointer-events: none;
         }
 
         /* ---- Scrollbar: tidak terlihat, tetap bisa di-scroll ---- */
@@ -1587,9 +1429,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .masthead::before, h1, .ghost-wrap, .capy-wrap, .pulse-dot {
-                animation-duration: 1.2s !important;
-            }
+            .pulse-dot { animation-duration: 1.2s !important; }
         }
 
         #browser {
@@ -1609,7 +1449,7 @@
             align-items: flex-end;
             gap: 4px;
             padding: 6px 8px 0;
-            background: #1A1815;
+            background: var(--overlay-bg);
             border-bottom: 1px solid var(--line);
             overflow-x: auto;
             overflow-y: hidden;
@@ -1650,13 +1490,13 @@
 
         .profile-tile.sel {
             border-color: var(--accent);
-            box-shadow: 0 0 0 1px var(--accent) inset, 0 0 0 3px rgba(125, 180, 148, .18);
+            box-shadow: 0 0 0 1px var(--accent) inset, 0 0 0 3px rgba(var(--accent-rgb), .18);
             background: var(--accent-soft);
         }
 
         .profile-tile.sel .profile-tile-avatar {
             background: var(--accent);
-            color: #141310;
+            color: var(--accent-text);
         }
 
         #profilePickerHint { flex: 1; text-align: center; }
@@ -1715,6 +1555,33 @@
         }
 
         .profile-delete svg { flex: none; }
+
+        .profile-settings {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 6px;
+            padding: 7px 10px;
+            width: 100%;
+            border: 1px solid rgba(152, 195, 121, .35);
+            background: transparent;
+            color: #98c379;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 11.5px;
+            font-weight: 600;
+            transition: background .15s, border-color .15s, color .15s, transform .1s;
+        }
+
+        .profile-settings:hover {
+            background: rgba(152, 195, 121, .12);
+            border-color: rgba(152, 195, 121, .6);
+            color: #b5e09a;
+        }
+
+        .profile-settings:active { transform: scale(.97); }
+        .profile-settings svg { flex: none; }
 
         .tab {
             flex: 0 1 auto;
@@ -1808,6 +1675,7 @@
 
         .webview-host webview[hidden] { display: none; }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 <body>
 
@@ -1829,81 +1697,25 @@
 
     <header class="masthead">
         <div class="mast-main">
-            <h1 id="mastheadTitle">RAZOR</h1>
             <div class="meta">
                 <span class="pulse-dot"></span>
                 <span id="todayLabel"></span>
             </div>
         </div>
-        <div class="ghost-wrap" id="ghostWrap" aria-hidden="true">
-            <div id="ghost">
-                <div id="red">
-                    <div id="pupil"></div>
-                    <div id="pupil1"></div>
-                    <div id="eye"></div>
-                    <div id="eye1"></div>
-                    <div id="top0"></div>
-                    <div id="top1"></div>
-                    <div id="top2"></div>
-                    <div id="top3"></div>
-                    <div id="top4"></div>
-                    <div id="st0"></div>
-                    <div id="st1"></div>
-                    <div id="st2"></div>
-                    <div id="st3"></div>
-                    <div id="st4"></div>
-                    <div id="st5"></div>
-                    <div id="an1"></div>
-                    <div id="an2"></div>
-                    <div id="an3"></div>
-                    <div id="an4"></div>
-                    <div id="an5"></div>
-                    <div id="an6"></div>
-                    <div id="an7"></div>
-                    <div id="an8"></div>
-                    <div id="an9"></div>
-                    <div id="an10"></div>
-                    <div id="an11"></div>
-                    <div id="an12"></div>
-                    <div id="an13"></div>
-                    <div id="an14"></div>
-                    <div id="an15"></div>
-                    <div id="an16"></div>
-                    <div id="an17"></div>
-                    <div id="an18"></div>
-                </div>
-                <div id="shadow"></div>
+        <div class="mast-brand" id="mastBrand">
+            <div class="mast-icon-area" id="mastIconArea">
+                <img class="mast-icon" id="mastIcon" src="./icon.png" />
             </div>
+            <div class="mast-trail" id="mastTrail"></div>
+            <div class="mast-title" id="mastTitle"></div>
         </div>
-        <div class="capy-wrap hidden-anim" id="capyWrap" aria-hidden="true">
-            <div class="capybaraloader">
-                <div class="capybara-c">
-                    <div class="capy-head">
-                        <div class="capy-ear"><div class="capy-ear-inner"></div></div>
-                        <div class="capy-ear"></div>
-                        <div class="capy-mouth">
-                            <div class="capy-lip"></div>
-                            <div class="capy-lip"></div>
-                        </div>
-                        <div class="capy-eye"></div>
-                        <div class="capy-eye"></div>
-                    </div>
-                    <div class="capy-leg"></div>
-                    <div class="capy-leg2"></div>
-                    <div class="capy-leg2"></div>
-                    <div class="capy-body"></div>
-                </div>
-                <div class="capy-loader-line">
-                    <div class="capy-dash"></div>
-                </div>
-            </div>
-        </div>
+        <div class="mast-smoke-layer" id="mastSmokeLayer"></div>
     </header>
 
     <div class="banner" id="banner"></div>
 
     <div class="table-wrap">
-        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;padding:8px 12px 4px;border-bottom:1px solid #1e293b;">Mingguan</div>
+        <div style="font-size:11px;font-weight:700;color:var(--label-muted);text-transform:uppercase;letter-spacing:1px;padding:8px 12px 4px;border-bottom:1px solid var(--label-line);">Mingguan</div>
         <table>
             <thead>
                 <tr>
@@ -1918,7 +1730,7 @@
     </div>
 
     <div class="table-wrap" style="margin-top:12px;">
-        <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;padding:8px 12px 4px;border-bottom:1px solid #1e293b;">Harian</div>
+        <div style="font-size:11px;font-weight:700;color:var(--label-muted);text-transform:uppercase;letter-spacing:1px;padding:8px 12px 4px;border-bottom:1px solid var(--label-line);">Harian</div>
         <table>
             <thead>
                 <tr>
@@ -2176,33 +1988,17 @@
             <button type="button" class="open-browser" id="btnMoveJournalDir">Pindahkan…</button>
         </div>
         <div class="settings-field">
-            <label>Mode Tampilan</label>
-            <div class="mode-seg" id="modeSeg" role="radiogroup" aria-label="Mode tampilan">
-                <button type="button" class="mode-seg-btn" data-mode="jurnal" role="radio" aria-checked="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                    Jurnal
-                </button>
-                <button type="button" class="mode-seg-btn" data-mode="soal" role="radio" aria-checked="false">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
-                    Soal
-                </button>
+            <label>Tema Warna</label>
+            <div class="mode-seg" id="themeSeg" role="radiogroup" aria-label="Tema warna">
+                <button type="button" class="mode-seg-btn" data-theme="default" role="radio" aria-checked="true">Default</button>
+                <button type="button" class="mode-seg-btn" data-theme="oneDark" role="radio" aria-checked="false">One Dark Pro</button>
             </div>
-            <div class="settings-hint">Atur mode utama tampilan. Perubahan akan diterapkan setelah tab dibuka ulang.</div>
-        </div>
-        <div class="settings-field">
-            <label>Animasi Masthead</label>
-            <div class="mode-seg" id="animSeg" role="radiogroup" aria-label="Animasi masthead">
-                <button type="button" class="mode-seg-btn" data-anim="0" role="radio" aria-checked="true">👾 Pacman</button>
-                <button type="button" class="mode-seg-btn" data-anim="1" role="radio" aria-checked="false">🦫 Capybara</button>
-            </div>
-            <div class="settings-hint">Pilih animasi yang ditampilkan di area masthead.</div>
+            <div class="settings-hint">Ubah warna tampilan aplikasi. Perubahan langsung diterapkan.</div>
         </div>
         <div class="settings-field" id="updateSection">
             <label>Pembaruan</label>
             <div style="display:flex;align-items:center;gap:10px;">
                 <button type="button" class="open-browser" id="btnCheckUpdate" style="flex:1;">Cek Update</button>
-                <button type="button" class="open-browser" id="btnUpdateNow" style="flex:1;display:none;background:#52b788;color:#0d3320;">Download Update</button>
-                <button type="button" class="open-browser" id="btnRestartInstall" style="flex:1;display:none;background:#f4d35e;color:#1a1a1a;">Restart &amp; Install</button>
             </div>
             <div class="settings-status" id="updateStatus"></div>
         </div>
@@ -2213,17 +2009,48 @@
     </div>
 </div>
 
-<div class="update-banner" id="updateBanner" style="display:none;">
-    <span id="updateBannerText">Update tersedia!</span>
-    <div class="update-banner-actions">
-        <button type="button" class="update-btn update-download" id="btnUpdateDownload">Download</button>
-        <button type="button" class="update-btn update-install" id="btnUpdateInstall" style="display:none;">Restart &amp; Install</button>
+<div class="week-picker settings-picker hidden" id="profileSettingsPopup">
+    <div class="wp-header">
+        <div>
+            <div class="wp-title" id="pspTitle">Pengaturan Akun</div>
+            <div class="wp-sub" id="pspSub">—</div>
+        </div>
+        <button type="button" class="wp-close" id="btnCloseProfileSettings" aria-label="Tutup">&times;</button>
+    </div>
+    <div class="settings-body">
+        <div class="settings-field">
+            <label>Nama Akun</label>
+            <input type="text" class="psp-name-input" id="pspName" maxlength="30" spellcheck="false" />
+        </div>
+        <div class="settings-field">
+            <label>Mode</label>
+            <div class="mode-seg" id="pspModeSeg" role="radiogroup" aria-label="Mode akun">
+                <button type="button" class="mode-seg-btn" data-mode="jurnal" role="radio">Jurnal</button>
+                <button type="button" class="mode-seg-btn" data-mode="soal" role="radio">Soal</button>
+            </div>
+            <div class="settings-hint">Mode disimpan per akun. Akun lain tidak terpengaruh.</div>
+        </div>
+        <div class="settings-field">
+            <label>Tab Terbuka</label>
+            <div class="psp-tab-count" id="pspTabCount">0 tab</div>
+        </div>
+        <div class="settings-field">
+            <label>Webview</label>
+            <button type="button" class="open-browser" id="btnRefreshWebview" style="width:100%;">Perbarui Webview</button>
+            <div class="settings-hint">Hapus webview lama lalu buat baru. Akun & jurnal tetap ada.</div>
+        </div>
+    </div>
+    <div class="wp-footer">
+        <button type="button" class="setup-skip" id="btnDeleteProfile" style="border-color:rgba(226,116,107,.4);color:#D98C86;">Hapus Akun</button>
+        <button type="button" class="open-browser" id="btnSaveProfileSettings">Simpan</button>
     </div>
 </div>
+
 
 <div id="toast"></div>
 
 <div class="bottom-bar">
+    <span class="mode-indicator" id="modeIndicator">Jurnal</span>
     <div class="bottom-info">
         <span id="footCount"></span>
         <span class="save-status" id="saveStatus">Memuat…</span>
@@ -2264,7 +2091,14 @@
         <span class="divider"></span>
         <button type="button" class="open-browser" id="btnBack">Kembali</button>
         <button type="button" class="open-browser" id="btnRefresh">Refresh</button>
+        <span class="divider"></span>
+        <button type="button" class="open-browser zoom-btn" id="btnZoomOut" title="Zoom Out">−</button>
+        <span class="zoom-label" id="zoomLabel">100%</span>
+        <button type="button" class="open-browser zoom-btn" id="btnZoomIn" title="Zoom In">+</button>
+        <button type="button" class="open-browser zoom-btn" id="btnZoomReset" title="Reset Zoom" style="font-size:11px;">1:1</button>
+        <span class="divider"></span>
         <button type="button" class="open-browser" id="btnInjectScript">Inject Script</button>
+        <button type="button" class="open-browser" id="btnAutoLogin" hidden>Login</button>
         <button type="button" class="open-browser" id="btnTandaTangan" style="background:#52b788;color:#0d3320;">Tanda Tangan</button>
     </div>
 </div>
@@ -2275,6 +2109,25 @@
 </div>
 
 <script>
+function playNotifSound() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        function tone(freq, start, dur) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.3, ctx.currentTime + start);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(ctx.currentTime + start);
+            osc.stop(ctx.currentTime + start + dur);
+        }
+        tone(880, 0, 0.15);
+        tone(1100, 0.12, 0.2);
+    } catch (_) {}
+}
 const DAYS = [
     { value: 'Sn', short: 'Sen', full: 'Senin' },
     { value: 'Sl', short: 'Sel', full: 'Selasa' },
@@ -2303,8 +2156,7 @@ let activeSoalFile = null;
 // SOAL_FILES — display names reflect bundled scripts in the script/ folder.
 // file = internal name sent to main process; display = what the user sees.
 const SOAL_FILES = [
-    { file: 'soal.js', sub: 'File soal utama', display: 'SOAL.js' },
-    { file: 'soal-p1.js', sub: 'File soal profil 1', display: 'SOAL1.js' },
+    { file: 'soal.js', sub: 'File game matrikulasi (6 game)', display: 'SOAL.js' },
     { file: 'akm.js', sub: 'File soal AKM', display: 'akm.js' }
 ];
 
@@ -2324,25 +2176,33 @@ function hideBanner() {
 }
 
 async function loadActivities() {
-    if (!journalDirSet) return;
+    if (!journalDirSet) { fetch('/api/debug?msg=loadActivities+SKIP+journalDirSet=false'); return; }
     const id = activeProfile ? activeProfile.id : 0;
+    fetch('/api/debug?msg=loadActivities+START+id=' + id + '+profileName=' + (activeProfile ? activeProfile.name : 'null'));
     try {
         const res = await fetch('/api/journal?profile=' + id);
         const data = await res.json();
         if (!res.ok || !data.ok) throw new Error(data.error || 'Gagal memuat');
         const cur = activeProfile ? activeProfile.id : 0;
-        if (id !== cur) return;
+        if (id !== cur) { fetch('/api/debug?msg=loadActivities+RACE+id=' + id + '+cur=' + cur); return; }
         activities = data.activities || [];
         activitiesProfile = id;
+        fetch('/api/debug?msg=loadActivities+OK+count=' + activities.length);
         renderTable();
         loadHarianConfig();
         setToday();
         hideBanner();
         setSaveStatus('Siap', 'ok');
     } catch (e) {
+        fetch('/api/debug?msg=loadActivities+ERROR+' + encodeURIComponent(String(e)));
         const cur = activeProfile ? activeProfile.id : 0;
         if (id !== cur) return;
-        showBanner();
+        // Hanya tampilkan banner jika di halaman kejar.id login
+        let url = '';
+        try { if (activeTab && activeTab.webview) url = activeTab.webview.getURL(); } catch (_) {}
+        if (isKejarLoginPage(url)) {
+            showBanner();
+        }
         setSaveStatus('Offline', 'err');
     }
 }
@@ -2428,6 +2288,7 @@ function runSave() {
 }
 
 function renderTable() {
+    console.log('[DEBUG] renderTable called, activities:', activities.length);
     const tbody = document.getElementById('activityTable');
     let html = '';
     activities.forEach((item, index) => {
@@ -2488,7 +2349,7 @@ function setSaksi(index, value) {
 function updateProgress() {
     const done = activities.filter(a => a.tipe === 'PARENT' || a.saksi).length;
     document.getElementById('footCount').textContent = done === activities.length
-        ? 'Semua kegiatan sudah ber-saksi.'
+        ? 'Siap'
         : (activities.length - done) + ' kegiatan belum ber-saksi.';
 }
 
@@ -2552,11 +2413,14 @@ function fmtRange(s, e) {
     return day(s) + ' – ' + day(e) + ' ' + e.getFullYear();
 }
 
+let WEEKS_FULL = [];
+
 async function loadWeeks() {
     try {
         const res = await fetch('/api/weeks');
         const data = await res.json();
         if (Array.isArray(data.weeks) && data.weeks.length) WEEKS = data.weeks;
+        if (Array.isArray(data.weeksFull)) WEEKS_FULL = data.weeksFull;
     } catch (_) { }
 }
 
@@ -2572,13 +2436,43 @@ function setupDesktop() {
         }
     });
     document.getElementById('btnRefresh').addEventListener('click', () => window.desktop.refreshPage());
+    document.getElementById('btnAutoLogin').addEventListener('click', () => {
+        if (activeTab) tryAutoLogin(activeTab);
+    });
     document.getElementById('btnInjectScript').addEventListener('click', () => {
         window.desktop.injectScript(activeProfile ? activeProfile.id : undefined);
     });
+
+    // ═══ ZOOM CONTROLS ═══
+    let _zoomFactor = 1.0;
+    const zoomLabel = document.getElementById('zoomLabel');
+    function applyZoom(z) {
+        _zoomFactor = Math.max(0.25, Math.min(5, z));
+        if (zoomLabel) zoomLabel.textContent = Math.round(_zoomFactor * 100) + '%';
+        try {
+            if (activeTab && activeTab.webview) {
+                activeTab.webview.setZoomFactor(_zoomFactor);
+            }
+        } catch (_) {}
+    }
+    document.getElementById('btnZoomIn').addEventListener('click', () => applyZoom(_zoomFactor + 0.1));
+    document.getElementById('btnZoomOut').addEventListener('click', () => applyZoom(_zoomFactor - 0.1));
+    document.getElementById('btnZoomReset').addEventListener('click', () => applyZoom(1.0));
+    document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key === '=') { e.preventDefault(); applyZoom(_zoomFactor + 0.1); }
+        if ((e.ctrlKey || e.metaKey) && e.key === '-') { e.preventDefault(); applyZoom(_zoomFactor - 0.1); }
+        if ((e.ctrlKey || e.metaKey) && e.key === '0') { e.preventDefault(); applyZoom(1.0); }
+    });
+
     document.getElementById('btnTandaTangan').addEventListener('click', async () => {
         if (!activeProfile) return;
         try {
             const creds = await window.desktop.getCredentials(activeProfile.name);
+            if (creds && creds.locked) {
+                showToast('Catatan terkunci — buka Catatan & masukkan PIN dulu');
+                window.desktop.tandaTangan('', '');
+                return;
+            }
             if (creds && (creds.username || creds.password)) {
                 window.desktop.tandaTangan(creds.username, creds.password);
             } else {
@@ -2591,14 +2485,8 @@ function setupDesktop() {
     });
     document.getElementById('btnSettings').addEventListener('click', openSettings);
 
-    // Auto-update listeners
-    const updateBanner = document.getElementById('updateBanner');
-    const updateBannerText = document.getElementById('updateBannerText');
-    const btnUpdateDownload = document.getElementById('btnUpdateDownload');
-    const btnUpdateInstall = document.getElementById('btnUpdateInstall');
+    // Auto-update — buka update window
     const btnCheckUpdate = document.getElementById('btnCheckUpdate');
-    const btnUpdateNow = document.getElementById('btnUpdateNow');
-    const btnRestartInstall = document.getElementById('btnRestartInstall');
     const updateStatus = document.getElementById('updateStatus');
 
     function setUpdateStatus(text) {
@@ -2606,71 +2494,8 @@ function setupDesktop() {
     }
 
     btnCheckUpdate.addEventListener('click', () => {
-        setUpdateStatus('Mengecek update...');
-        btnCheckUpdate.disabled = true;
+        setUpdateStatus('Membuka pembaruan...');
         window.desktop.checkForUpdate();
-    });
-
-    btnUpdateNow.addEventListener('click', () => {
-        window.desktop.downloadUpdate();
-        setUpdateStatus('Mengunduh...');
-        btnUpdateNow.disabled = true;
-    });
-
-    btnRestartInstall.addEventListener('click', () => {
-        window.desktop.installUpdate();
-    });
-
-    // Banner buttons
-    btnUpdateDownload.addEventListener('click', () => {
-        window.desktop.downloadUpdate();
-        btnUpdateDownload.textContent = 'Mengunduh…';
-        btnUpdateDownload.disabled = true;
-    });
-    btnUpdateInstall.addEventListener('click', () => {
-        window.desktop.installUpdate();
-    });
-
-    window.desktop.onUpdateAvailable(info => {
-        // Banner
-        updateBanner.style.display = 'flex';
-        updateBannerText.textContent = 'Update v' + info.version + ' tersedia!';
-        btnUpdateDownload.style.display = 'inline-block';
-        btnUpdateDownload.textContent = 'Download';
-        btnUpdateDownload.disabled = false;
-        btnUpdateInstall.style.display = 'none';
-        // Settings
-        setUpdateStatus('v' + info.version + ' tersedia!');
-        btnCheckUpdate.style.display = 'none';
-        btnUpdateNow.style.display = 'inline-block';
-        btnUpdateNow.disabled = false;
-        btnRestartInstall.style.display = 'none';
-    });
-
-    window.desktop.onUpdateProgress(p => {
-        updateBannerText.textContent = 'Mengunduh… ' + p.percent + '%';
-        btnUpdateDownload.textContent = p.percent + '%';
-        setUpdateStatus('Mengunduh… ' + p.percent + '%');
-        btnUpdateNow.textContent = p.percent + '%';
-    });
-
-    window.desktop.onUpdateDownloaded(() => {
-        updateBannerText.textContent = 'Update siap diinstall!';
-        btnUpdateDownload.style.display = 'none';
-        btnUpdateInstall.style.display = 'inline-block';
-        setUpdateStatus('Siap diinstall!');
-        btnUpdateNow.style.display = 'none';
-        btnRestartInstall.style.display = 'inline-block';
-    });
-
-    window.desktop.onUpdateNotAvailable(() => {
-        setUpdateStatus('Sudah versi terbaru.');
-        btnCheckUpdate.disabled = false;
-    });
-
-    window.desktop.onUpdateError(msg => {
-        setUpdateStatus('Error: ' + msg);
-        btnCheckUpdate.disabled = false;
     });
 }
 
@@ -2730,6 +2555,14 @@ function showToast(msg) {
     el._timer = setTimeout(() => el.classList.remove('show'), 3000);
 }
 
+function playSound(name) {
+    try {
+        const audio = new Audio('/sound/' + name + '.mp3');
+        audio.volume = 0.5;
+        audio.play().catch(() => {});
+    } catch (_) {}
+}
+
 async function openSettings() {
     if (!window.desktop) return;
     try {
@@ -2752,6 +2585,14 @@ document.getElementById('btnNotepad').addEventListener('click', () => {
     window.desktop.openCatatan();
 });
 
+function updateModeIndicator() {
+    const el = document.getElementById('modeIndicator');
+    if (!el) return;
+    const soal = appMode === 'soal';
+    el.textContent = soal ? 'Soal' : 'Jurnal';
+    el.classList.toggle('soal', soal);
+}
+
 function syncModeUI() {
     const seg = document.getElementById('modeSeg');
     if (!seg) return;
@@ -2760,11 +2601,18 @@ function syncModeUI() {
         btn.classList.toggle('active', active);
         btn.setAttribute('aria-checked', active ? 'true' : 'false');
     });
+    updateModeIndicator();
 }
 
 function setAppMode(mode) {
+    console.log('[SET-MODE] called with', mode, 'prev=', appMode);
     prevAppMode = appMode;
     appMode = mode === 'soal' ? 'soal' : 'jurnal';
+    console.log('[SET-MODE] appMode now=', appMode);
+    if (activeProfile) {
+        activeProfile.mode = appMode;
+        saveProfiles();
+    }
     syncModeUI();
     applyMode();
     if (activeTab) enforceNavigation(activeTab);
@@ -2799,19 +2647,7 @@ function renderSoalGrid() {
         }).join('');
     };
 
-    if (window.desktop && window.desktop.getScriptFiles) {
-        window.desktop.getScriptFiles().then(list => {
-            try {
-                (list || []).forEach(l => {
-                    const f = SOAL_FILES.find(s => s.file === l.file);
-                    if (f) f.display = l.display;
-                });
-            } catch (_) { }
-            doRender();
-        }).catch(() => doRender());
-    } else {
-        doRender();
-    }
+    doRender();
 
     grid.addEventListener('click', e => {
         const card = e.target.closest('.soal-card');
@@ -2830,6 +2666,7 @@ function selectSoalFile(file) {
         card.classList.toggle('active', active);
         card.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
+    if (activeTab && !activeTab.soalInject && activeTab.contentsId) setTabSoalInject(activeTab, true);
     syncSoalInject();
 }
 
@@ -2995,12 +2832,23 @@ function renderSoalInjectTabs() {
 
 function setTabSoalInject(tab, on) {
     tab.soalInject = !!on;
+    // Saat OFF → matikan semua tab lain di profil yang sama
+    if (!on && tab.profile && tab.profile.tabs) {
+        tab.profile.tabs.forEach(t => {
+            if (t !== tab && t.soalInject) {
+                t.soalInject = false;
+                if (window.desktop && t.contentsId) {
+                    window.desktop.setSoalAutoInject(false, t.contentsId, null);
+                }
+            }
+        });
+    }
     const list = document.getElementById('soalInjectTabs');
     const row = document.getElementById('soalInjectRow');
     if (list && row && !row.hidden) renderSoalInjectTabs();
     if (!window.desktop || !tab.contentsId) return;
     if (on) {
-        const file = activeGameIdx >= 0 ? GAMES[activeGameIdx].file : SOAL_FILES[0].file;
+        const file = activeSoalFile || (activeGameIdx >= 0 ? GAMES[activeGameIdx].file : SOAL_FILES[0].file);
         window.desktop.setSoalAutoInject(true, tab.contentsId, file);
     } else {
         window.desktop.setSoalAutoInject(false, tab.contentsId, null);
@@ -3009,7 +2857,7 @@ function setTabSoalInject(tab, on) {
 
 function syncSoalInject() {
     if (!activeProfile) return;
-    const file = activeGameIdx >= 0 ? GAMES[activeGameIdx].file : SOAL_FILES[0].file;
+    const file = activeSoalFile || (activeGameIdx >= 0 ? GAMES[activeGameIdx].file : SOAL_FILES[0].file);
     activeProfile.tabs.forEach(tab => {
         if (tab.soalInject && tab.contentsId) {
             window.desktop.setSoalAutoInject(true, tab.contentsId, file);
@@ -3022,14 +2870,49 @@ function syncSoalInject() {
 
 const GAMES = [
     { name: 'Operasi Bilangan Rill', file: 'soal.js', url: 'https://app.kejar.id/student/games/obr/stages' },
-    { name: 'Vocabulary', file: 'soal-p1.js', url: 'https://app.kejar.id/student/games/vocabulary/stages' },
-    { name: 'Menulis Efektif', file: 'soal-p1.js', url: 'https://app.kejar.id/student/games/menulisefektif/stages' },
-    { name: 'TOEIC Words', file: 'soal-p1.js', url: 'https://app.kejar.id/student/games/toeicwords/stages' },
-    { name: 'TOEIC Reading', file: 'soal-p1.js', url: 'https://app.kejar.id/student/games/toeic_reading_preparation/stages' },
-    { name: 'AKM Literasi', file: 'akm.js', url: 'https://app.kejar.id/student/program-package/774736ee-49cf-40cb-b10b-ba230d903b68/list-subjects/cf66c480-895f-4d79-864a-80e520e3d339/packages/' }
+    { name: 'Vocabulary', file: 'soal.js', url: 'https://app.kejar.id/student/games/vocabulary/stages' },
+    { name: 'Menulis Efektif', file: 'soal.js', url: 'https://app.kejar.id/student/games/menulisefektif/stages' },
+    { name: 'TOEIC Words', file: 'soal.js', url: 'https://app.kejar.id/student/games/toeicwords/stages' },
+    { name: 'TOEIC Reading', file: 'soal.js', url: 'https://app.kejar.id/student/games/toeic_reading_preparation/stages' },
+    { name: 'AKM Literasi', file: 'akm.js', url: 'https://app.kejar.id/student/program-package/774736ee-49cf-40cb-b10b-ba230d903b68/list-subjects/cf66c480-895f-4d79-864a-80e520e3d339/packages/' },
+    { name: 'AKM Numerasi', file: 'akm.js', url: 'https://app.kejar.id/student/program-package/774736ee-49cf-40cb-b10b-ba230d903b68/list-subjects/c927e4f0-2bee-4a56-8195-37f8dc9d14cc/packages/' }
 ];
 
 let activeGameIdx = -1;
+
+function detectGameIdxFromUrl(url) {
+    try {
+        const path = new URL(url).pathname;
+        for (let i = 0; i < GAMES.length; i++) {
+            const gpath = new URL(GAMES[i].url).pathname;
+            if (path.indexOf(gpath) === 0) return i;
+        }
+    } catch (_) { }
+    return -1;
+}
+
+function handleSoalUrlChange(tab, url) {
+    if (!tab || tab !== activeTab || appMode !== 'soal') return;
+    const idx = detectGameIdxFromUrl(url);
+    if (idx < 0 || idx === activeGameIdx) return;
+    activeGameIdx = idx;
+    const g = GAMES[idx];
+    const label = document.getElementById('gamePillLabel');
+    if (label) label.textContent = g.name;
+    renderGameGrid();
+    closeBabakPicker();
+    const babakList = GAMES_BABAK[idx] || [];
+    const babakGroup = document.getElementById('babakPillGroup');
+    if (babakList.length > 0) {
+        if (babakGroup) babakGroup.hidden = false;
+        const bl = document.getElementById('babakPillLabel');
+        if (bl && !tab.activeBabak) bl.textContent = 'Pilih Babak';
+        renderBabakGrid(idx);
+    } else {
+        if (babakGroup) babakGroup.hidden = true;
+    }
+    syncSoalInject();
+}
 
 function renderGameGrid() {
     const grid = document.getElementById('gameGrid');
@@ -3047,6 +2930,13 @@ function renderGameGrid() {
             '<span class="tile-name">' + g.name + '</span>';
         el.addEventListener('click', () => {
             activeGameIdx = i;
+            activeSoalFile = g.file;
+            try { localStorage.setItem('kejar.soalFile', g.file); } catch (_) { }
+            document.querySelectorAll('#soalGrid .soal-card').forEach(card => {
+                const active = card.dataset.file === g.file;
+                card.classList.toggle('active', active);
+                card.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
             document.getElementById('gamePillLabel').textContent = g.name;
             renderGameGrid();
             closeBabakPicker();
@@ -3063,6 +2953,7 @@ function renderGameGrid() {
                 p.tabs.forEach(t => {
                     t.activeBabak = null;
                     if (t.webview) t.webview.loadURL(g.url);
+                    if (!t.soalInject && t.contentsId) setTabSoalInject(t, true);
                 });
             });
             renderSoalInjectTabs();
@@ -3107,7 +2998,7 @@ function closeBabakPicker() {
 }
 
 function applyMode() {
-    const table = document.querySelector('.table-wrap');
+    const tables = document.querySelectorAll('.table-wrap');
     const panel = document.getElementById('soalPanel');
     const weekGroup = document.getElementById('weekPillGroup');
     const gameGroup = document.getElementById('gamePillGroup');
@@ -3117,9 +3008,9 @@ function applyMode() {
     const tandaTanganBtn = document.getElementById('btnTandaTangan');
     const backBtn = document.getElementById('btnBack');
     const titleEl = document.getElementById('titlebarTitle');
-    if (!table || !panel) return;
+    if (!tables.length || !panel) return;
     const soal = appMode === 'soal';
-    table.hidden = soal;
+    tables.forEach(t => { t.hidden = soal; });
     panel.hidden = !soal;
     if (weekGroup) weekGroup.hidden = soal;
     if (gameGroup) gameGroup.hidden = !soal;
@@ -3127,6 +3018,7 @@ function applyMode() {
     if (bottomInfo) bottomInfo.hidden = soal;
     if (injectBtn) injectBtn.hidden = soal;
     if (tandaTanganBtn) tandaTanganBtn.hidden = soal;
+    updateAutoLoginBtn();
     if (backBtn) backBtn.hidden = !soal;
     if (titleEl) titleEl.textContent = soal ? 'Soal' : 'RAZOR';
     const mastEl = document.getElementById('mastheadTitle');
@@ -3169,6 +3061,7 @@ async function moveJournalDir() {
 }
 
 const weekDates = i => {
+    if (!WEEKS[i]) return { s: new Date(), e: new Date() };
     const p = new URL(WEEKS[i]).searchParams;
     return {
         s: new Date(p.get('weekStartDate') + 'T00:00:00'),
@@ -3194,8 +3087,14 @@ const MAX_TABS = 15;
 
 function updateWeekUI() {
     if (!activeTab) return;
-    const d = weekDates(activeTab.week);
-    document.getElementById('pillLabel').textContent = (activeTab.week + 1) + ' • ' + fmtRange(d.s, d.e);
+    const idx = activeTab.week;
+    const label = (WEEKS_FULL[idx] && WEEKS_FULL[idx].label) || '';
+    if (label) {
+        document.getElementById('pillLabel').textContent = (idx + 1) + ' • ' + label;
+    } else {
+        const d = weekDates(idx);
+        document.getElementById('pillLabel').textContent = (idx + 1) + ' • ' + fmtRange(d.s, d.e);
+    }
     tiles.forEach((t, i) => t.classList.toggle('cur', i === activeTab.week));
     const atStart = activeTab.week === 0;
     const atEnd = activeTab.week === WEEKS.length - 1;
@@ -3282,6 +3181,13 @@ function updateProfileUI() {
                     '<path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>' +
                 '</svg>' +
                 '<span class="profile-delete-label">Hapus akun</span>' +
+            '</button>' +
+            '<button type="button" class="profile-settings" aria-label="Pengaturan akun">' +
+                '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                    '<circle cx="12" cy="12" r="3"></circle>' +
+                    '<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>' +
+                '</svg>' +
+                '<span class="profile-settings-label">Pengaturan</span>' +
             '</button>';
         el.querySelector('.profile-tile-avatar').textContent = p.name.charAt(0);
         el.querySelector('.tile-name').textContent = p.name;
@@ -3330,6 +3236,11 @@ function updateProfileUI() {
             }
             clearTimeout(del._confirmTimer);
             closeProfile(p);
+        });
+        const settingsBtn = el.querySelector('.profile-settings');
+        settingsBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            openProfileSettings(p);
         });
         el.addEventListener('click', () => {
             if (p === activeProfile) return;
@@ -3395,9 +3306,13 @@ function updateTabUI() {
 }
 
 function activateProfile(p) {
+    try {
     flushPendingSave();
     activeProfile = p;
     activeTab = p.activeTab;
+    appMode = p.mode || appMode;
+    syncModeUI();
+    applyMode();
     applyVisibility();
     updateProfileUI();
     updateTabUI();
@@ -3405,8 +3320,16 @@ function activateProfile(p) {
     sendActiveWebview();
     renderSoalInjectTabs();
     saveProfiles();
-    if (journalDirSet) loadActivities();
+    if (journalDirSet) {
+        fetch('/api/debug?msg=activateProfile+calling+loadActivities');
+        loadActivities();
+    } else {
+        fetch('/api/debug?msg=activateProfile+SKIP+journalDirSet=false');
+    }
     if (activeTab) setTimeout(() => enforceNavigation(activeTab), 500);
+    } catch (e) {
+        fetch('/api/debug?msg=activateProfile+ERROR+' + encodeURIComponent(String(e && e.message || e)) + '+stack=' + encodeURIComponent(String(e && e.stack || '').substring(0, 300)));
+    }
 }
 
 function createProfile(week, rec) {
@@ -3417,6 +3340,7 @@ function createProfile(week, rec) {
         id: isNew ? profileSeq : rec.id,
         name: isNew ? 'Akun ' + (profiles.length + 1) : rec.name,
         partition: isNew ? 'persist:kejar-p' + profileSeq : rec.partition,
+        mode: isNew ? appMode : (rec.mode === 'soal' ? 'soal' : 'jurnal'),
         tabs: [],
         activeTab: null
     };
@@ -3440,6 +3364,143 @@ function activateTab(tab) {
     if (babakGroup && !babakGroup.hidden) {
         babakLabel.textContent = tab.activeBabak || 'Pilih Babak';
     }
+    updateAutoLoginBtn();
+}
+
+// ── Auto Login (kredensial dari catatan, seperti tanda tangan) ──
+function isKejarLoginPage(url) {
+    if (!url) return false;
+    try {
+        const u = new URL(url);
+        if (u.hostname !== 'app.kejar.id') return false;
+        return !u.pathname.startsWith('/student');
+    } catch (_) { return false; }
+}
+
+function updateAutoLoginBtn() {
+    const btn = document.getElementById('btnAutoLogin');
+    if (!btn) return;
+    let url = '';
+    try { if (activeTab && activeTab.webview) url = activeTab.webview.getURL(); } catch (_) { }
+    btn.hidden = !isKejarLoginPage(url);
+}
+
+// Watchdog login: tahan logout berkali-kali, antre antar tab, max 3x per 10 menit.
+const _loginQueue = [];
+let _loginWorkerBusy = false;
+const _lockedToastShown = new Set();
+const _noCredToastAt = new Map();
+
+function maybeAutoLogin(tab, url) {
+    try {
+        if (!tab || !tab.webview) return;
+        if (!url) { try { url = tab.webview.getURL(); } catch (_) { return; } }
+        if (!isKejarLoginPage(url)) {
+            if (tab.loginFailCount) { tab.loginFailCount = 0; tab.loginBlockedUntil = 0; }
+            return;
+        }
+        tryAutoLogin(tab);
+    } catch (_) { }
+}
+
+async function tryAutoLogin(tab) {
+    if (!tab || !tab.webview || tab.autoLoginBusy) return;
+    if (!window.desktop) return;
+    const now = Date.now();
+    if (tab.loginBlockedUntil && now < tab.loginBlockedUntil) return;
+    if (tab.lastLoginAttempt && (now - tab.lastLoginAttempt) < 3000) return;
+    let url = '';
+    try { url = tab.webview.getURL(); } catch (_) { return; }
+    if (!isKejarLoginPage(url)) return;
+    let cred = null;
+    try { cred = await window.desktop.getCredentials(tab.profile ? tab.profile.name : ''); }
+    catch (_) { return; }
+    if (cred && cred.locked) {
+        const pname = tab.profile ? tab.profile.name : 'akun';
+        if (!_lockedToastShown.has(pname)) {
+            _lockedToastShown.add(pname);
+            showToast('Catatan terkunci — buka Catatan & masukkan PIN agar auto-login jalan');
+        }
+        return;
+    }
+    if (!cred || !cred.username || !cred.password) {
+        const pname = tab.profile ? tab.profile.name : 'akun';
+        const last = _noCredToastAt.get(pname) || 0;
+        if (now - last > 60000) {
+            _noCredToastAt.set(pname, now);
+            showToast('Tidak ada kredensial di catatan untuk ' + pname);
+        }
+        return;
+    }
+    tab.lastLoginAttempt = now;
+    _loginQueue.push({ tab, cred });
+    processLoginQueue();
+}
+
+async function processLoginQueue() {
+    if (_loginWorkerBusy) return;
+    _loginWorkerBusy = true;
+    while (_loginQueue.length) {
+        const job = _loginQueue.shift();
+        const tab = job && job.tab;
+        if (!tab || !tab.webview) continue;
+        try { await doLoginJob(tab, job.cred); } catch (_) { }
+        // Jeda antar tab agar tidak login bareng
+        await new Promise(r => setTimeout(r, 2500 + Math.floor(Math.random() * 2000)));
+    }
+    _loginWorkerBusy = false;
+}
+
+async function doLoginJob(tab, cred) {
+    tab.autoLoginBusy = true;
+    console.log('[AUTOLOGIN] Mengisi login untuk:', tab.profile ? tab.profile.name : '?');
+    const js =
+        '(function(){' +
+        'if (window.__razorAutoLogin) return "dup";' +
+        'let n=0;' +
+        'function setV(el,v){const d=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value");d.set.call(el,v);el.dispatchEvent(new Event("input",{bubbles:true}));el.dispatchEvent(new Event("change",{bubbles:true}));}' +
+        'function attempt(){' +
+        'const u=document.getElementById("username");' +
+        'const pw=document.getElementById("password");' +
+        'if (!u || !pw){if(++n<50)setTimeout(attempt,200);else console.log("[AUTOLOGIN] field tidak ketemu");return;}' +
+        'window.__razorAutoLogin = true;' +
+        'setV(u,' + JSON.stringify(cred.username) + ');' +
+        'setV(pw,' + JSON.stringify(cred.password) + ');' +
+        'const b=document.querySelector("button.btn.btn-primary.w-100");' +
+        'if (b) b.click();' +
+        'console.log("[AUTOLOGIN] submitted");}' +
+        'attempt();})()';
+    try { await tab.webview.executeJavaScript(js); } catch (_) { }
+    await new Promise(r => setTimeout(r, 6000));
+    tab.autoLoginBusy = false;
+    let u2 = '';
+    try { u2 = tab.webview.getURL(); } catch (_) { return; }
+    if (!isKejarLoginPage(u2)) {
+        tab.loginFailCount = 0;
+        tab.loginBlockedUntil = 0;
+        try { _lockedToastShown.delete(tab.profile ? tab.profile.name : 'akun'); } catch (_) { }
+        updateAutoLoginBtn();
+        return;
+    }
+    let gagal = false;
+    try {
+        gagal = await tab.webview.executeJavaScript(
+            '(function(){const els=document.querySelectorAll("h6");' +
+            'for (let i=0;i<els.length;i++){if (els[i].textContent.toLowerCase().indexOf("login gagal")!==-1) return true;}return false;})()'
+        );
+    } catch (_) { }
+    if (gagal) {
+        tab.loginFailCount = (tab.loginFailCount || 0) + 1;
+        if (tab.loginFailCount >= 3) {
+            tab.loginBlockedUntil = Date.now() + 10 * 60 * 1000;
+            showToast('Login otomatis gagal 3x — username/password salah untuk ' + (tab.profile ? tab.profile.name : 'akun') + '. Stop 10 mnt.');
+        } else {
+            showToast('Login otomatis gagal — coba lagi (' + tab.loginFailCount + '/3) untuk ' + (tab.profile ? tab.profile.name : 'akun'));
+            setTimeout(() => maybeAutoLogin(tab), 5000);
+        }
+    } else {
+        setTimeout(() => maybeAutoLogin(tab), 5000);
+    }
 }
 
 function createTab(week, profile) {
@@ -3447,7 +3508,8 @@ function createTab(week, profile) {
     if (p.tabs.length >= MAX_TABS) return null;
     const host = document.getElementById('webviewHost');
     const webview = document.createElement('webview');
-    const soalUrl = appMode === 'soal' ? 'https://app.kejar.id/student/new-dashboard' : (WEEKS[week] || 'https://app.kejar.id/student/new-dashboard');
+    const pMode = (p && p.mode) || appMode;
+    const soalUrl = pMode === 'soal' ? 'https://app.kejar.id/student/new-dashboard' : (WEEKS[week] || 'https://app.kejar.id/student/new-dashboard');
     webview.setAttribute('src', soalUrl);
     webview.setAttribute('partition', p.partition);
     webview.setAttribute('useragent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36');
@@ -3462,12 +3524,27 @@ function createTab(week, profile) {
         webview.style.height = '100%';
         try { tab.contentsId = webview.getWebContentsId() || 0; } catch (_) { tab.contentsId = 0; }
         if (tab === activeTab) sendActiveWebview();
+        if (tab === activeTab) updateAutoLoginBtn();
+        try { maybeAutoLogin(tab); } catch (_) { }
     });
     webview.addEventListener('console-message', e => {
         const msg = String(e.message);
+        if (msg.includes('[AUTOLOGIN]')) console.log('(webview)', msg);
         if (!tab.autoRefreshed && msg.includes('[SOAL-JURNAL-DONE]')) {
             tab.autoRefreshed = true;
             setTimeout(() => webview.reload(), 500);
+        }
+        if (msg.includes('[SOAL-JURNAL-DONE]') && window.desktop && !tab.notifiedJurnal) {
+            tab.notifiedJurnal = true;
+            window.desktop.notify('RAZOR — Jurnal Selesai', 'Semua jurnal harian + mingguan untuk ' + (tab.profile ? tab.profile.name : 'akun') + ' sudah diisi.');
+        }
+        if (msg.includes('__SOAL_ALL_DONE__') && window.desktop) {
+            window.desktop.notify('RAZOR — Soal Selesai', 'Semua babak soal untuk ' + (tab.profile ? tab.profile.name : 'akun') + ' sudah terjawab.');
+            playNotifSound();
+        }
+        if (msg.includes('__AKM_ALL_DONE__') && window.desktop) {
+            window.desktop.notify('RAZOR — Semua Selesai', 'Semua aktivitas sudah bernilai 100.');
+            playNotifSound();
         }
         if (msg.startsWith('[LOGIN-USER]:')) {
             const user = msg.slice('[LOGIN-USER]:'.length).trim();
@@ -3478,8 +3555,14 @@ function createTab(week, profile) {
             }
         }
     });
+    webview.addEventListener('did-navigate-in-page', e => {
+        if (e.isMainFrame && tab === activeTab) handleSoalUrlChange(tab, e.url);
+    });
     webview.addEventListener('did-navigate', e => {
         if (tab === activeTab) enforceNavigation(tab, e.url);
+        if (tab === activeTab) updateAutoLoginBtn();
+        handleSoalUrlChange(tab, e.url);
+        try { maybeAutoLogin(tab, e.url); } catch (_) { }
         try {
             const p = new URL(e.url).searchParams;
             const s = p.get('weekStartDate');
@@ -3548,6 +3631,7 @@ function saveProfiles() {
                 id: p.id,
                 name: p.name,
                 partition: p.partition,
+                mode: p.mode || 'jurnal',
                 week: p.activeTab ? p.activeTab.week : 0
             }))
         }));
@@ -3571,6 +3655,105 @@ function loadProfiles() {
 function closePicker() {
     const el = document.getElementById('weekPicker');
     if (el) el.classList.remove('open');
+}
+
+let _pspProfile = null;
+
+function openProfileSettings(p) {
+    _pspProfile = p;
+    const popup = document.getElementById('profileSettingsPopup');
+    document.getElementById('pspTitle').textContent = p.name;
+    document.getElementById('pspSub').textContent = 'Pengaturan akun ' + p.name;
+    document.getElementById('pspName').value = p.name;
+    document.getElementById('pspTabCount').textContent = p.tabs.length + ' tab';
+    const modeSeg = document.getElementById('pspModeSeg');
+    modeSeg.querySelectorAll('.mode-seg-btn').forEach(b => {
+        const isActive = b.dataset.mode === (p.mode || 'soal');
+        b.setAttribute('role', 'radio');
+        b.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        b.classList.toggle('active', isActive);
+    });
+    const delBtn = document.getElementById('btnDeleteProfile');
+    delBtn.disabled = profiles.length <= 1;
+    delBtn.style.opacity = profiles.length <= 1 ? '.35' : '1';
+    popup.classList.remove('hidden');
+    popup.classList.add('open');
+}
+
+function closeProfileSettings() {
+    const popup = document.getElementById('profileSettingsPopup');
+    popup.classList.remove('open');
+    popup.classList.add('hidden');
+    _pspProfile = null;
+}
+
+function initProfileSettingsPopup() {
+    const modeSeg = document.getElementById('pspModeSeg');
+    modeSeg.querySelectorAll('.mode-seg-btn').forEach(b => {
+        b.addEventListener('click', () => {
+            modeSeg.querySelectorAll('.mode-seg-btn').forEach(x => {
+                x.setAttribute('aria-checked', 'false');
+                x.classList.remove('active');
+            });
+            b.setAttribute('aria-checked', 'true');
+            b.classList.add('active');
+            if (_pspProfile) {
+                const newMode = b.dataset.mode;
+                _pspProfile.mode = newMode;
+                if (_pspProfile === activeProfile) setAppMode(newMode);
+                saveProfiles();
+                updateProfileUI();
+                updateModeIndicator();
+                closeProfileSettings();
+            }
+        });
+    });
+    document.getElementById('btnCloseProfileSettings').addEventListener('click', closeProfileSettings);
+    document.getElementById('btnSaveProfileSettings').addEventListener('click', () => {
+        if (!_pspProfile) return;
+        const newName = document.getElementById('pspName').value.trim();
+        if (newName) _pspProfile.name = newName;
+        const checked = document.querySelector('#pspModeSeg .mode-seg-btn[aria-checked="true"]');
+        console.log('[PSP] save clicked, checked=', checked?.dataset?.mode, '_pspProfile===activeProfile:', _pspProfile === activeProfile);
+        if (checked) {
+            const newMode = checked.dataset.mode;
+            _pspProfile.mode = newMode;
+            console.log('[PSP] calling setAppMode(', newMode, ')');
+            if (_pspProfile === activeProfile) {
+                setAppMode(newMode);
+            } else {
+                console.log('[PSP] _pspProfile !== activeProfile, skipping setAppMode');
+            }
+        }
+        saveProfiles();
+        updateProfileUI();
+        updateModeIndicator();
+        closeProfileSettings();
+        console.log('[PSP] after save, appMode=', appMode);
+    });
+    document.getElementById('btnDeleteProfile').addEventListener('click', () => {
+        if (!_pspProfile || profiles.length <= 1) return;
+        closeProfileSettings();
+        closeProfile(_pspProfile);
+    });
+    document.getElementById('btnRefreshWebview').addEventListener('click', () => {
+        if (!_pspProfile) return;
+        const p = _pspProfile;
+        const wasActive = p === activeProfile;
+        p.tabs.forEach(t => t.webview.remove());
+        p.tabs = [];
+        p.activeTab = null;
+        createTab(0, p);
+        if (wasActive) activateProfile(p);
+        saveProfiles();
+        updateProfileUI();
+        closeProfileSettings();
+        showToast('Webview ' + p.name + ' diperbarui.');
+    });
+    document.getElementById('pspName').addEventListener('keydown', e => {
+        if (e.key === 'Enter') document.getElementById('btnSaveProfileSettings').click();
+        if (e.key === 'Escape') closeProfileSettings();
+    });
 }
 
 function closeProfilePicker() {
@@ -3689,15 +3872,9 @@ function initWeekPicker() {
         const sel = document.getElementById(id);
         if (sel) sel.addEventListener('change', saveHarianConfig);
     });
-    document.getElementById('modeSeg').addEventListener('click', e => {
-        const btn = e.target.closest('.mode-seg-btn');
-        if (!btn) return;
-        setAppMode(btn.dataset.mode);
-        saveAppMode(appMode);
-    });
 
     document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') { closePicker(); closeProfilePicker(); closeGamePicker(); closeSettings(); }
+        if (e.key === 'Escape') { closePicker(); closeProfilePicker(); closeGamePicker(); closeSettings(); closeProfileSettings(); }
         if ((e.ctrlKey || e.metaKey) && (e.key === 't' || e.key === 'T')) {
             e.preventDefault();
             if (activeTab && activeTab.profile.tabs.length < MAX_TABS)
@@ -3716,10 +3893,12 @@ function initWeekPicker() {
     });
 
     loadWeeks().then(async () => {
+        fetch('/api/debug?msg=BOOT+loadWeeks+resolved');
         buildTiles();
         if (!bootSettings && window.desktop) {
             try { bootSettings = await window.desktop.getSettings(); } catch (_) { }
         }
+        fetch('/api/debug?msg=BOOT+bootSettings=' + JSON.stringify(bootSettings));
         if (bootSettings && bootSettings.mode) appMode = bootSettings.mode;
         const saved = loadProfiles();
         if (saved.list.length) {
@@ -3728,41 +3907,173 @@ function initWeekPicker() {
             createProfile(0);
         }
         await ensureJournalDir();
+        fetch('/api/debug?msg=BOOT+journalDirSet=' + journalDirSet);
         const target = saved.activeId != null
             ? profiles.find(p => p.id === saved.activeId)
             : null;
+        fetch('/api/debug?msg=BOOT+activateProfile+target=' + (target ? target.id : 'null') + '+fallback=' + (profiles[0] ? profiles[0].id : 'null'));
         activateProfile(target || profiles[0]);
         applyMode();
+        updateModeIndicator();
     });
 }
 
 setupDesktop();
 initWeekPicker();
+initProfileSettingsPopup();
 
-// Animation toggle (ghost ↔ capybara) — settings-driven
+// Masthead GSAP animation
 (function() {
-    const ghostWrap = document.getElementById('ghostWrap');
-    const capyWrap = document.getElementById('capyWrap');
-    const seg = document.getElementById('animSeg');
-    if (!ghostWrap || !capyWrap || !seg) return;
-    let mode = 0;
-    try { mode = parseInt(localStorage.getItem('razor.mastAnim')) || 0; } catch(_) {}
-    function apply(i) {
-        ghostWrap.classList.toggle('hidden-anim', i !== 0);
-        capyWrap.classList.toggle('hidden-anim', i !== 1);
+    const iconArea = document.getElementById('mastIconArea');
+    const icon = document.getElementById('mastIcon');
+    const trail = document.getElementById('mastTrail');
+    const titleEl = document.getElementById('mastTitle');
+    const smokeLayer = document.getElementById('mastSmokeLayer');
+    const brand = document.getElementById('mastBrand');
+    if (!icon || !titleEl) return;
+
+    const text = 'RAZOR';
+    const chars = [];
+
+    text.split('').forEach((ch, i) => {
+        const group = document.createElement('div');
+        group.className = 'mast-char-group';
+        const wrap = document.createElement('div');
+        wrap.className = 'mast-char-wrap';
+        const span = document.createElement('span');
+        span.className = 'mast-char';
+        span.textContent = ch;
+        const lineWrap = document.createElement('div');
+        lineWrap.className = 'mast-line-wrap';
+        const line = document.createElement('div');
+        line.className = 'mast-underline';
+        lineWrap.appendChild(line);
+        wrap.appendChild(span);
+        group.appendChild(wrap);
+        group.appendChild(lineWrap);
+        titleEl.appendChild(group);
+        chars.push({ span, wrap, line, lineWrap, group });
+    });
+
+    function spawnPuff(x, y) {
+        const puff = document.createElement('div');
+        puff.className = 'mast-puff';
+        const size = 25 + Math.random() * 55;
+        puff.style.width = size + 'px';
+        puff.style.height = size + 'px';
+        puff.style.left = (x - size / 2) + 'px';
+        puff.style.top = (y - size / 2) + 'px';
+        smokeLayer.appendChild(puff);
+        gsap.fromTo(puff,
+            { opacity: 0.7, scale: 0.2 },
+            { opacity: 0, scale: 1.8, x: (Math.random()-0.5)*120, y: (Math.random()-0.5)*100-30, duration: 0.5+Math.random()*0.6, ease: 'power2.out', onComplete: () => puff.remove() }
+        );
+    }
+
+    function smokeTrail(duration) {
+        const start = performance.now();
+        function tick(now) {
+            if (now - start > duration) return;
+            const rect = icon.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            spawnPuff(cx, cy);
+            spawnPuff(cx + (Math.random()-0.5)*20, cy + (Math.random()-0.5)*20);
+            requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }
+
+    const tl = gsap.timeline();
+
+    // 1. Icon muncul dari kanan
+    tl.fromTo(icon,
+        { opacity: 0, x: 200 },
+        { opacity: 1, x: 0, duration: 0.5, ease: 'power3.out' },
+        0
+    );
+
+    // 2. Trail (|) muncul dari kanan
+    tl.fromTo(trail,
+        { height: 0, opacity: 0 },
+        { height: 120, opacity: 0.8, duration: 0.4, ease: 'power2.out' },
+        0.4
+    );
+
+    // 3. Huruf muncul satu-satu dari kanan
+    const charStart = 0.7;
+    chars.forEach((c, i) => {
+        tl.fromTo(c.span,
+            { opacity: 0, x: 60 },
+            { opacity: 1, x: 0, duration: 0.35, ease: 'power3.out' },
+            charStart + i * 0.12
+        );
+    });
+
+    // 4. Garis bawah expand
+    const lineStart = charStart + chars.length * 0.12;
+    chars.forEach((c, i) => {
+        tl.fromTo(c.line,
+            { width: '0%' },
+            { width: '70%', duration: 0.3, ease: 'power2.out' },
+            lineStart + i * 0.06
+        );
+    });
+
+    // 5. Smoke trail
+    tl.call(() => smokeTrail(500), null, 0.2);
+
+    // 6. Jelly bounce + underline expand
+    const jellyStart = lineStart + chars.length * 0.06 + 0.3;
+    chars.forEach((c, i) => {
+        tl.to(c.wrap, {
+            scaleX: 0.8, scaleY: 1.2, duration: 0.1, ease: 'power2.inOut',
+            yoyo: true, repeat: 3
+        }, jellyStart + i * 0.08);
+        tl.to(c.line,
+            { width: '300%', duration: 0.5, ease: 'power2.out' },
+            jellyStart
+        );
+    });
+
+    // 6. Bouncing loop: icon → R → A → Z → O → R
+    const bounceStart = jellyStart + 1.2;
+    const targets = [iconArea, ...chars.map(c => c.wrap)];
+    let bIdx = 0;
+    function bounceNext() {
+        const el = targets[bIdx % targets.length];
+        gsap.to(el, {
+            y: -50, duration: 0.15, ease: 'power2.out',
+            yoyo: true, repeat: 5,
+            onComplete: () => { gsap.set(el, { y: 0 }); }
+        });
+        bIdx++;
+        setTimeout(bounceNext, 5000);
+    }
+    setTimeout(bounceNext, bounceStart * 1000);
+})();
+
+// Theme toggle (default ↔ one dark pro)
+(function() {
+    const seg = document.getElementById('themeSeg');
+    if (!seg) return;
+    let theme = 'default';
+    try { theme = localStorage.getItem('razor.mastTheme') || 'default'; } catch(_) {}
+    function apply(t) {
+        document.body.classList.toggle('theme-one-dark', t === 'oneDark');
         seg.querySelectorAll('.mode-seg-btn').forEach(b => {
-            const match = parseInt(b.dataset.anim) === i;
+            const match = b.dataset.theme === t;
             b.classList.toggle('active', match);
             b.setAttribute('aria-checked', match);
         });
     }
-    apply(mode);
+    apply(theme);
     seg.addEventListener('click', e => {
         const btn = e.target.closest('.mode-seg-btn');
         if (!btn) return;
-        mode = parseInt(btn.dataset.anim) || 0;
-        try { localStorage.setItem('razor.mastAnim', mode); } catch(_) {}
-        apply(mode);
+        theme = btn.dataset.theme || 'default';
+        try { localStorage.setItem('razor.mastTheme', theme); } catch(_) {}
+        apply(theme);
     });
 })();
 </script>

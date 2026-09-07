@@ -4,9 +4,11 @@ const path = require('path');
 
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
-const TEMPLATE = path.join(ROOT, 'jurnal.js');
+function getTemplate() {
+    return path.join(getJournalDir(), 'jurnal.js');
+}
 const INDEX = path.join(ROOT, 'index.html');
-const LINK = path.join(ROOT, 'link.txt');
+const WEEKS_JSON = () => path.join(getJournalDir(), 'weeks.json');
 function getJournalDir() {
     return path.resolve(process.env.JOURNAL_DIR || path.join(ROOT, 'jurnal'));
 }
@@ -21,14 +23,19 @@ function ensureJournal(file) {
     try { fs.mkdirSync(getJournalDir(), { recursive: true }); } catch (_) { }
     if (fs.existsSync(file)) return;
     try {
-        if (fs.existsSync(TEMPLATE)) {
-            const content = fs.readFileSync(TEMPLATE, 'utf8');
+        if (fs.existsSync(getTemplate())) {
+            const content = fs.readFileSync(getTemplate(), 'utf8');
             fs.writeFileSync(file, content, 'utf8');
             if (file !== path.join(getJournalDir(), 'jurnal.js')) {
                 clearSaksiNames(file);
             }
+            console.log('[SERVER] Created journal file: ' + path.basename(file));
+        } else {
+            console.error('[SERVER] Template not found: ' + getTemplate());
         }
-    } catch (_) { }
+    } catch (err) {
+        console.error('[SERVER] ensureJournal error for ' + path.basename(file) + ':', err.message);
+    }
 }
 
 function clearSaksiNames(file) {
@@ -43,12 +50,28 @@ function clearSaksiNames(file) {
 
 function readWeeks() {
     try {
-        const raw = fs.readFileSync(LINK, 'utf8');
-        return raw.split(/\r?\n/)
-            .map(line => line.trim())
-            .filter(line => line && !line.startsWith('#') && /^https?:\/\//.test(line));
-    } catch (_) {
+        const raw = fs.readFileSync(WEEKS_JSON(), 'utf8');
+        const data = JSON.parse(raw);
+        if (Array.isArray(data)) return data.map(w => typeof w === 'string' ? w : w.url).filter(Boolean);
         return [];
+    } catch (_) {
+        try {
+            const raw = fs.readFileSync(path.join(ROOT, 'link.txt'), 'utf8');
+            return raw.split(/\r?\n/)
+                .map(line => line.trim())
+                .filter(line => line && !line.startsWith('#') && /^https?:\/\//.test(line));
+        } catch (_) { return []; }
+    }
+}
+
+function readWeeksFull() {
+    try {
+        const raw = fs.readFileSync(WEEKS_JSON(), 'utf8');
+        const data = JSON.parse(raw);
+        if (Array.isArray(data)) return data.map(w => typeof w === 'string' ? { url: w, label: '' } : w);
+        return [];
+    } catch (_) {
+        return readWeeks().map(url => ({ url, label: '' }));
     }
 }
 
@@ -222,24 +245,73 @@ const server = http.createServer(async (req, res) => {
         }
 
         if (req.method === 'GET' && url.pathname === '/api/journal') {
-            const file = journalPath(url.searchParams.get('profile'));
+            const pid = url.searchParams.get('profile');
+            const file = journalPath(pid);
             ensureJournal(file);
+            const acts = readActivities(file);
+            console.log('[SERVER] /api/journal profile=' + pid + ' file=' + path.basename(file) + ' activities=' + acts.length);
             sendJSON(res, 200, {
                 ok: true,
-                profile: url.searchParams.get('profile') || null,
-                activities: readActivities(file)
+                profile: pid || null,
+                activities: acts
             });
             return;
         }
 
+        if (req.method === 'GET' && url.pathname === '/api/debug') {
+            const msg = url.searchParams.get('msg') || '';
+            console.log('[DEBUG-FE] ' + msg);
+            sendJSON(res, 200, { ok: true });
+            return;
+        }
+
         if (req.method === 'GET' && url.pathname === '/api/weeks') {
-            sendJSON(res, 200, { ok: true, weeks: readWeeks() });
+            sendJSON(res, 200, { ok: true, weeks: readWeeks(), weeksFull: readWeeksFull() });
+            return;
+        }
+
+        if (req.method === 'POST' && url.pathname === '/api/weeks') {
+            const raw = await readBody(req);
+            let payload;
+            try { payload = JSON.parse(raw); } catch (e) { return sendJSON(res, 400, { ok: false, error: 'JSON tidak valid' }); }
+            try {
+                const dir = getJournalDir();
+                try { fs.mkdirSync(dir, { recursive: true }); } catch (_) {}
+                fs.writeFileSync(WEEKS_JSON(), JSON.stringify(payload.weeks || [], null, 2), 'utf8');
+                sendJSON(res, 200, { ok: true, weeks: readWeeks() });
+            } catch (err) {
+                sendJSON(res, 500, { ok: false, error: err.message });
+            }
             return;
         }
 
         if (req.method === 'GET' && url.pathname === '/api/harian') {
             sendJSON(res, 200, { ok: true, config: readHarianConfig(url.searchParams.get('profile')) });
             return;
+        }
+
+        // Serve sound files
+        if (req.method === 'GET' && url.pathname.startsWith('/sound/')) {
+            const soundFile = path.join(ROOT, url.pathname);
+            if (fs.existsSync(soundFile) && soundFile.endsWith('.mp3')) {
+                res.writeHead(200, { 'Content-Type': 'audio/mpeg' });
+                res.end(fs.readFileSync(soundFile));
+                return;
+            }
+        }
+
+        // Serve static files (icon.png, font/, etc.)
+        if (req.method === 'GET' && (url.pathname === '/icon.png' || url.pathname.startsWith('/font/'))) {
+            const safePath = url.pathname.replace(/\.\./g, '');
+            const filePath = path.join(ROOT, safePath);
+            if (fs.existsSync(filePath)) {
+                const ext = path.extname(filePath).toLowerCase();
+                const mimeMap = { '.png': 'image/png', '.ttf': 'font/ttf', '.otf': 'font/otf', '.woff': 'font/woff', '.woff2': 'font/woff2' };
+                const mime = mimeMap[ext] || 'application/octet-stream';
+                res.writeHead(200, { 'Content-Type': mime });
+                res.end(fs.readFileSync(filePath));
+                return;
+            }
         }
 
         if (req.method === 'POST' && url.pathname === '/api/harian') {

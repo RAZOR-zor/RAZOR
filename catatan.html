@@ -9,17 +9,33 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Palette Tema Warm & Cozy */
-            --bg-body: #2b2523;
-            --paper-bg: #362f2d;
-            --header-bg: #211c1b;
-            --accent-warm: #e0a96d;
-            --accent-warm-hover: #ecc19c;
-            --text-primary: #f4ebe1;
-            --text-secondary: #a89f91;
-            --border-color: #4a403d;
-            --line-number-color: #786c68;
+            /* Palette One Dark */
+            --bg-body: #282c34;
+            --paper-bg: #21252b;
+            --header-bg: #1b1f23;
+            --header-rgb: 27, 31, 35;
+            --accent-warm: #e5c07b;
+            --accent-warm-hover: #f0d798;
+            --accent-text: #282c34;
+            --text-primary: #c8ccd4;
+            --text-secondary: #7f848e;
+            --border-color: #3e4451;
+            --line-number-color: #636d83;
             --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        body.theme-one-dark {
+            --bg-body: #282c34;
+            --paper-bg: #21252b;
+            --header-bg: #1b1f23;
+            --header-rgb: 27, 31, 35;
+            --accent-warm: #e5c07b;
+            --accent-warm-hover: #f0d798;
+            --accent-text: #282c34;
+            --text-primary: #c8ccd4;
+            --text-secondary: #7f848e;
+            --border-color: #3e4451;
+            --line-number-color: #636d83;
         }
 
         * {
@@ -82,7 +98,7 @@
 
         /* Toolbar Hanya Tombol "+ Tambah Format Akun" */
         .notepad-toolbar {
-            background: rgba(33, 28, 27, 0.6);
+            background: rgba(var(--header-rgb), 0.6);
             padding: 10px 20px;
             display: flex;
             align-items: center;
@@ -91,7 +107,7 @@
 
         .tool-btn {
             background: var(--accent-warm);
-            color: #211c1b;
+            color: var(--accent-text);
             border: none;
             padding: 8px 16px;
             border-radius: 8px;
@@ -123,7 +139,7 @@
         .line-numbers {
             width: 48px;
             padding: 18px 0;
-            background: rgba(33, 28, 27, 0.25);
+            background: rgba(var(--header-rgb), 0.25);
             border-right: 1px solid var(--border-color);
             color: var(--line-number-color);
             font-family: 'JetBrains Mono', monospace;
@@ -198,7 +214,7 @@
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: var(--accent-warm);
-            color: #211c1b;
+            color: var(--accent-text);
             font-weight: 700;
             padding: 10px 22px;
             border-radius: 25px;
@@ -230,6 +246,59 @@
                 font-size: 0.8rem;
             }
         }
+
+        .lock-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--paper-bg);
+            padding: 24px;
+        }
+        .lock-overlay[hidden] { display: none; }
+        .lock-card {
+            width: min(360px, 100%);
+            background: var(--header-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+        .lock-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+        .lock-sub { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.5; }
+        .lock-input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 6px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--paper-bg);
+            color: var(--text-primary);
+            outline: none;
+            font-family: 'JetBrains Mono', monospace;
+            box-sizing: border-box;
+        }
+        .lock-input:focus { border-color: var(--accent-warm); }
+        .lock-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 11px;
+            border: none;
+            border-radius: 10px;
+            background: var(--accent-warm);
+            color: var(--accent-text);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+        }
+        .lock-btn:hover { background: var(--accent-warm-hover); }
+        .lock-err { min-height: 20px; font-size: 0.8rem; color: #e06c75; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -251,7 +320,10 @@
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 + Tambah Format Akun
             </button>
-            <button class="tool-btn" id="exportBtn" style="margin-left:auto;">
+            <button class="tool-btn" id="changePinBtn" style="margin-left:auto;background:transparent;border:1px solid var(--border-color);color:var(--text-secondary);">
+                Ganti PIN
+            </button>
+            <button class="tool-btn" id="exportBtn" style="margin-left:8px;">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 Export .txt
             </button>
@@ -276,6 +348,34 @@
 
     <!-- Toast Notification -->
     <div id="toast" class="toast">Format akun ditambahkan!</div>
+
+    <div class="lock-overlay" id="lockOverlay" hidden>
+        <div class="lock-card">
+            <div class="lock-title" id="lockTitle">Catatan Terkunci</div>
+            <div class="lock-sub" id="lockSub">Masukkan PIN 4-12 digit untuk membuka catatan.</div>
+            <input class="lock-input" id="lockPin" type="password" maxlength="12" placeholder="123456" autocomplete="new-password" />
+            <input class="lock-input" id="lockPin2" type="password" maxlength="12" placeholder="Ulangi PIN" autocomplete="new-password" style="margin-top:8px;display:none;" />
+            <button type="button" id="lockToggle" style="background:none;border:none;color:var(--text-secondary);font-size:0.8rem;cursor:pointer;margin-top:8px;">Lihat PIN</button>
+            <button class="lock-btn" id="lockGo">Buka</button>
+            <button type="button" id="lockChangePin" style="background:none;border:none;color:var(--text-secondary);font-size:0.8rem;cursor:pointer;margin-top:8px;text-decoration:underline;">Ganti PIN</button>
+            <div class="lock-err" id="lockErr"></div>
+        </div>
+    </div>
+
+    <div class="lock-overlay" id="changeOverlay" hidden>
+        <div class="lock-card">
+            <div class="lock-title">Ganti PIN</div>
+            <div class="lock-sub">Masukkan PIN lama lalu PIN baru 4-12 digit angka.</div>
+            <input class="lock-input" id="oldPin" type="password" maxlength="12" placeholder="PIN lama" autocomplete="new-password" />
+            <input class="lock-input" id="newPin" type="password" maxlength="12" placeholder="PIN baru" autocomplete="new-password" style="margin-top:8px;" />
+            <input class="lock-input" id="newPin2" type="password" maxlength="12" placeholder="Ulangi PIN baru" autocomplete="new-password" style="margin-top:8px;" />
+            <div style="display:flex;gap:8px;margin-top:12px;">
+                <button class="lock-btn" id="changeCancel" type="button" style="background:transparent;border:1px solid var(--border-color);color:var(--text-secondary);">Batal</button>
+                <button class="lock-btn" id="changeGo" type="button">Simpan</button>
+            </div>
+            <div class="lock-err" id="changeErr"></div>
+        </div>
+    </div>
 
     <script>
         const notepad = document.getElementById('notepad');
@@ -302,7 +402,42 @@ Catatan  : Autentikasi 2FA aktif
 -----------------------------------------
 `;
 
-        window.addEventListener('DOMContentLoaded', () => {
+        let lockMode = 'unlock';
+        const lockOverlay = document.getElementById('lockOverlay');
+        const lockTitle = document.getElementById('lockTitle');
+        const lockSub = document.getElementById('lockSub');
+        const lockPin = document.getElementById('lockPin');
+        const lockPin2 = document.getElementById('lockPin2');
+        const lockGo = document.getElementById('lockGo');
+        const lockErr = document.getElementById('lockErr');
+
+        function showLock(mode, msg) {
+            lockMode = mode;
+            lockOverlay.hidden = false;
+            lockErr.textContent = msg || '';
+            lockPin.value = '';
+            lockPin2.value = '';
+            if (mode === 'setup') {
+                lockTitle.textContent = 'Buat PIN Catatan';
+                lockSub.textContent = 'Buat PIN 4-12 digit angka saja (contoh: 123456). File lama otomatis di-backup & dienkripsi.';
+                lockPin.placeholder = '123456';
+                lockPin2.style.display = 'block';
+                lockGo.textContent = 'Buat & Enkripsi';
+                document.getElementById('lockChangePin').style.display = 'none';
+            } else {
+                lockTitle.textContent = 'Catatan Terkunci';
+                lockSub.textContent = 'Masukkan PIN 4-12 digit angka untuk membuka catatan.';
+                lockPin.placeholder = '123456';
+                lockPin2.style.display = 'none';
+                lockGo.textContent = 'Buka';
+                document.getElementById('lockChangePin').style.display = 'block';
+            }
+            setTimeout(() => { try { lockPin.focus(); } catch (_) {} }, 100);
+        }
+
+        function hideLock() { lockOverlay.hidden = true; }
+
+        function loadEditorText() {
             window.catatanAPI.load().then(text => {
                 if (text !== null) {
                     notepad.value = text;
@@ -312,6 +447,133 @@ Catatan  : Autentikasi 2FA aktif
                 }
                 updateEditorStats();
             });
+        }
+
+        async function refreshLockState() {
+            try {
+                const st = await window.catatanAPI.status();
+                if (!st.encrypted && !st.hasLegacy) {
+                    showLock('setup', '');
+                    return;
+                }
+                if (st.encrypted && !st.unlocked) {
+                    showLock('unlock', st.lockedOutUntil ? 'Terkunci sementara. Tunggu sebentar.' : '');
+                    return;
+                }
+                if (!st.encrypted && st.hasLegacy) {
+                    showLock('setup', 'Amankan catatan lama dengan PIN agar login & tanda tangan tetap jalan tapi file tidak bisa dibaca orang.');
+                    return;
+                }
+                hideLock();
+                loadEditorText();
+            } catch (_) {
+                hideLock();
+                loadEditorText();
+            }
+        }
+
+        function cleanPin(v) { return String(v || '').trim().replace(/\D/g, '').slice(0, 12); }
+
+        async function submitPin() {
+            const raw = String(lockPin.value || '');
+            const pin = cleanPin(raw);
+            lockErr.textContent = '';
+            if (!/^\d{4,12}$/.test(pin)) {
+                if (!pin) lockErr.textContent = 'Isi PIN dulu (4-12 digit angka). Yang diketik belum masuk.';
+                else lockErr.textContent = 'PIN kurang: baru ' + pin.length + ' digit, minimal 4 digit angka.';
+                return;
+            }
+            lockGo.disabled = true;
+            try {
+                if (lockMode === 'setup') {
+                    const pin2 = cleanPin(lockPin2.value.trim());
+                    lockPin2.value = pin2;
+                    if (pin !== pin2) { lockErr.textContent = 'PIN tidak sama. Ulangi.'; lockGo.disabled = false; return; }
+                    const r = await window.catatanAPI.setupPin(pin);
+                    if (r && r.ok) { hideLock(); loadEditorText(); showToast('Catatan dienkripsi!'); }
+                    else lockErr.textContent = (r && r.reason) || 'Gagal membuat PIN.';
+                } else {
+                    const r = await window.catatanAPI.unlock(pin);
+                    if (r && r.ok) { hideLock(); loadEditorText(); }
+                    else lockErr.textContent = (r && r.reason) || 'PIN salah.';
+                }
+            } catch (e) {
+                lockErr.textContent = 'Gagal: ' + (e.message || e);
+            }
+            lockGo.disabled = false;
+        }
+
+        document.getElementById('lockToggle').addEventListener('click', () => {
+            const show = lockPin.type === 'password';
+            lockPin.type = show ? 'text' : 'password';
+            lockPin2.type = show ? 'text' : 'password';
+        });
+
+        lockGo.addEventListener('click', submitPin);
+        lockPin.addEventListener('keydown', e => { if (e.key === 'Enter') submitPin(); });
+        lockPin2.addEventListener('keydown', e => { if (e.key === 'Enter') submitPin(); });
+
+        const changeOverlay = document.getElementById('changeOverlay');
+        const oldPinEl = document.getElementById('oldPin');
+        const newPinEl = document.getElementById('newPin');
+        const newPin2El = document.getElementById('newPin2');
+        const changeErr = document.getElementById('changeErr');
+        const changePinBtn = document.getElementById('changePinBtn');
+
+        function openChangePin() {
+            changeErr.textContent = '';
+            oldPinEl.value = '';
+            newPinEl.value = '';
+            newPin2El.value = '';
+            changeOverlay.hidden = false;
+            setTimeout(() => { try { oldPinEl.focus(); } catch (_) {} }, 100);
+        }
+        function closeChangePin() { changeOverlay.hidden = true; }
+
+        async function submitChangePin() {
+            const oldPin = cleanPin(oldPinEl.value);
+            const newPin = cleanPin(newPinEl.value);
+            const newPin2 = cleanPin(newPin2El.value);
+            changeErr.textContent = '';
+            if (!/^\d{4,12}$/.test(oldPin)) { changeErr.textContent = 'PIN lama harus 4-12 digit angka.'; return; }
+            if (!/^\d{4,12}$/.test(newPin)) { changeErr.textContent = 'PIN baru kurang: baru ' + newPin.length + ' digit, minimal 4.'; return; }
+            if (newPin !== newPin2) { changeErr.textContent = 'PIN baru tidak sama. Ulangi.'; return; }
+            if (oldPin === newPin) { changeErr.textContent = 'PIN baru sama dengan PIN lama.'; return; }
+            const btn = document.getElementById('changeGo');
+            btn.disabled = true;
+            try {
+                const r = await window.catatanAPI.changePin(oldPin, newPin);
+                if (r && r.ok) {
+                    closeChangePin();
+                    // Kalau ganti dari layar kunci, langsung buka juga
+                    if (!lockOverlay.hidden) { hideLock(); loadEditorText(); }
+                    showToast('PIN berhasil diganti!');
+                }
+                else changeErr.textContent = (r && r.reason) || 'Gagal ganti PIN.';
+            } catch (e) {
+                changeErr.textContent = 'Gagal: ' + (e.message || e);
+            }
+            btn.disabled = false;
+        }
+
+        changePinBtn.addEventListener('click', openChangePin);
+        document.getElementById('lockChangePin').addEventListener('click', () => {
+            if (lockMode === 'setup') return;
+            changeErr.textContent = '';
+            oldPinEl.value = String(lockPin.value || '');
+            newPinEl.value = '';
+            newPin2El.value = '';
+            changeOverlay.hidden = false;
+        });
+        document.getElementById('changeCancel').addEventListener('click', closeChangePin);
+        document.getElementById('changeGo').addEventListener('click', submitChangePin);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            try {
+                const theme = new URLSearchParams(location.search).get('theme');
+                if (theme === 'oneDark') document.body.classList.add('theme-one-dark');
+            } catch (_) { }
+            refreshLockState();
         });
 
         notepad.addEventListener('input', () => {

@@ -11,19 +11,12 @@ contextBridge.exposeInMainWorld('desktop', {
     setSoalAutoInject: (enabled, contentsId, fileName) => ipcRenderer.send('win:set-soal-auto-inject', enabled, contentsId, fileName),
     deleteProfileFile: (profileId) => ipcRenderer.send('win:delete-profile-file', profileId),
     refreshPage: () => ipcRenderer.send('win:refresh-page'),
+    notify: (title, body) => ipcRenderer.send('os-notify', title, body),
     setActiveTab: id => ipcRenderer.send('win:set-active-tab', id),
-    openCatatan: () => ipcRenderer.send('win:open-catatan'),
+    openCatatan: () => ipcRenderer.send('win:open-catatan', (() => { try { return localStorage.getItem('razor.mastTheme') || 'default'; } catch (_) { return 'default'; } })()),
     getSettings: () => ipcRenderer.invoke('settings:get'),
     chooseJournalDir: () => ipcRenderer.invoke('settings:choose-journal-dir'),
     setJournalDir: (dir) => ipcRenderer.invoke('settings:set-journal-dir', dir),
     setMode: (mode) => ipcRenderer.invoke('settings:set-mode', mode),
-    getScriptFiles: () => ipcRenderer.invoke('scripts:list'),
-    downloadUpdate: () => ipcRenderer.send('update:download'),
-    installUpdate: () => ipcRenderer.send('update:install'),
-    checkForUpdate: () => ipcRenderer.send('update:check'),
-    onUpdateAvailable: (cb) => ipcRenderer.on('update-available', (_, data) => cb(data)),
-    onUpdateProgress: (cb) => ipcRenderer.on('update-progress', (_, data) => cb(data)),
-    onUpdateDownloaded: (cb) => ipcRenderer.on('update-downloaded', () => cb()),
-    onUpdateNotAvailable: (cb) => ipcRenderer.on('update-not-available', () => cb()),
-    onUpdateError: (cb) => ipcRenderer.on('update-error', (_, msg) => cb(msg))
+    checkForUpdate: () => ipcRenderer.send('update:check')
 });

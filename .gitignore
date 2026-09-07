@@ -8,3 +8,6 @@ jurnal1.js
 tes.html
 link.txt
 jurnal-p*.js
+
+# GitHub token (JANGAN commit)
+update/gh-token.txt

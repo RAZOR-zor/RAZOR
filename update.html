@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAZOR Update</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:#282c34;
+    color:#abb2bf;
+    display:flex;align-items:center;justify-content:center;
+    height:100vh;overflow:hidden;
+    user-select:none;
+    -webkit-app-region:drag;
+  }
+  .container{
+    text-align:center;
+    width:420px;
+    padding:48px 40px;
+    -webkit-app-region:no-drag;
+  }
+  .logo{
+    font-family:'BigParty','Segoe UI',sans-serif;
+    font-size:42px;
+    font-weight:900;
+    letter-spacing:6px;
+    color:#fff;
+    margin-bottom:8px;
+    text-shadow:0 0 20px rgba(255,255,255,.08);
+  }
+  .divider{
+    width:60px;height:2px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+    margin:0 auto 36px;
+  }
+  .state{display:none}
+  .state.active{display:block}
+  .icon{
+    width:48px;height:48px;margin:0 auto 24px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;
+  }
+  .icon.check{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+  .icon.download{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+  .icon.done{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+  .icon.install{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+  .title{
+    font-size:16px;font-weight:600;
+    color:#fff;margin-bottom:6px;
+  }
+  .sub{
+    font-size:13px;color:rgba(255,255,255,.45);
+    line-height:1.5;
+  }
+  .version-tag{
+    display:inline-block;
+    padding:3px 10px;border-radius:4px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08);
+    font-size:12px;font-weight:600;
+    color:rgba(255,255,255,.7);
+    margin:12px 0 0;
+    font-family:'SF Mono','Cascadia Code','Consolas',monospace;
+    letter-spacing:.5px;
+  }
+  .progress-wrap{
+    margin-top:24px;
+    display:none;
+  }
+  .progress-wrap.active{display:block}
+  .progress-bar{
+    width:100%;height:4px;
+    background:rgba(255,255,255,.08);
+    border-radius:2px;overflow:hidden;
+    margin-bottom:12px;
+  }
+  .progress-fill{
+    height:100%;width:0%;
+    background:#fff;border-radius:2px;
+    transition:width .3s ease;
+  }
+  .progress-info{
+    display:flex;justify-content:space-between;
+    font-size:12px;color:rgba(255,255,255,.35);
+    font-family:'SF Mono','Cascadia Code','Consolas',monospace;
+  }
+  .progress-pct{
+    color:rgba(255,255,255,.7);font-weight:600;
+  }
+  .spinner{
+    width:48px;height:48px;margin:0 auto 24px;
+    border:2px solid rgba(255,255,255,.08);
+    border-top-color:rgba(255,255,255,.5);
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .error-wrap{display:none}
+  .error-wrap.active{display:block}
+  .error-msg{
+    font-size:12px;color:rgba(255,255,255,.35);
+    margin:16px 0 20px;
+    line-height:1.5;
+  }
+  .retry-btn{
+    display:inline-block;
+    padding:8px 24px;border-radius:6px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.1);
+    color:#fff;font-size:13px;font-weight:500;
+    cursor:pointer;transition:all .15s;
+  }
+  .retry-btn:hover{background:rgba(255,255,255,.14)}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">RAZOR</div>
+  <div class="divider"></div>
+
+  <!-- CHECKING -->
+  <div class="state active" id="s-checking">
+    <div class="spinner"></div>
+    <div class="title">Memeriksa pembaruan…</div>
+    <div class="sub">Mohon tunggu sebentar</div>
+  </div>
+
+  <!-- AVAILABLE + DOWNLOADING -->
+  <div class="state" id="s-downloading">
+    <div class="icon download">↓</div>
+    <div class="title">Mengunduh pembaruan</div>
+    <div class="sub" id="dlVersion">RAZOR</div>
+    <div class="progress-wrap active">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-info">
+        <span class="progress-pct" id="progressPct">0%</span>
+        <span id="progressDetail"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWNLOADED -->
+  <div class="state" id="s-downloaded">
+    <div class="icon done">✓</div>
+    <div class="title">Pembaruan siap</div>
+    <div class="sub">RAZOR akan restart untuk menyelesaikan pembaruan.</div>
+    <div class="version-tag" id="dlVersionTag"></div>
+  </div>
+
+  <!-- INSTALLING -->
+  <div class="state" id="s-installing">
+    <div class="spinner"></div>
+    <div class="title">Memperbarui RAZOR…</div>
+    <div class="sub">Mohon jangan tutup aplikasi</div>
+  </div>
+
+  <!-- NOT AVAILABLE -->
+  <div class="state" id="s-notavailable">
+    <div class="icon check">✓</div>
+    <div class="title">Sudah versi terbaru</div>
+    <div class="sub" id="currentVersion"></div>
+  </div>
+
+  <!-- ERROR -->
+  <div class="state" id="s-error">
+    <div class="icon install">!</div>
+    <div class="title">Gagal memperbarui</div>
+    <div class="error-msg" id="errorMsg"></div>
+    <button class="retry-btn" id="retryBtn">Coba Lagi</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  function show(id){
+    document.querySelectorAll('.state').forEach(s => s.classList.remove('active'));
+    $(id).classList.add('active');
+  }
+
+  // Listen to main process
+  const { ipcRenderer } = require('electron');
+
+  ipcRenderer.on('update-state', (_, state, data) => {
+    switch(state){
+      case 'checking':
+        show('s-checking');
+        break;
+
+      case 'available':
+        show('s-downloading');
+        $('dlVersion').textContent = 'RAZOR ' + (data && data.version ? data.version : '');
+        break;
+
+      case 'progress':
+        $('progressFill').style.width = (data.percent || 0) + '%';
+        $('progressPct').textContent = Math.round(data.percent || 0) + '%';
+        if(data.transferred && data.total){
+          const mb = (b) => (b/1048576).toFixed(1);
+          $('progressDetail').textContent = mb(data.transferred) + ' MB / ' + mb(data.total) + ' MB';
+        }
+        break;
+
+      case 'downloaded':
+        show('s-downloaded');
+        $('dlVersionTag').textContent = data && data.version ? 'v' + data.version : '';
+        // Auto install after 2s
+        setTimeout(() => {
+          show('s-installing');
+          ipcRenderer.send('update:install');
+        }, 2000);
+        break;
+
+      case 'not-available':
+        show('s-notavailable');
+        $('currentVersion').textContent = data && data.version ? 'Versi saat ini: v' + data.version : 'Versi saat ini sudah terbaru.';
+        break;
+
+      case 'error':
+        show('s-error');
+        $('errorMsg').textContent = data && data.message ? data.message : 'Terjadi kesalahan.';
+        break;
+    }
+  });
+
+  $('retryBtn').addEventListener('click', () => {
+    show('s-checking');
+    ipcRenderer.send('update:check');
+  });
+})();
+</script>
+</body>
+</html>

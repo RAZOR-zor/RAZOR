@@ -1,134 +1,323 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAZOR</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #141310;
-            --surface: #1D1B17;
-            --ink: #ECE8E0;
-            --muted: #8B867B;
-            --line: #2C2923;
-            --accent: #7DB494;
-            --accent-soft: rgba(125, 180, 148, .16);
-        }
+<meta charset="UTF-8">
+<title>RAZOR</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-        * { box-sizing: border-box; }
+  @font-face {
+    font-family: 'BigParty';
+    src: url('font/BigPartyC2-Blue.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
 
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg);
-            color: var(--ink);
-            font-family: 'Inter', system-ui, sans-serif;
-            -webkit-app-region: drag;
-            user-select: none;
-            overflow: hidden;
-        }
+  html, body {
+    height: 100%;
+    background: #282c34;
+    overflow: hidden;
+    -webkit-app-region: drag;
+    user-select: none;
+  }
 
-        .splash {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 22px;
-            text-align: center;
-        }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-        .mark {
-            width: 72px;
-            height: 72px;
-            border-radius: 18px;
-            padding: 3px;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
-        }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
 
-        .mark img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            border-radius: 15px;
-        }
+  .icon-area {
+    position: relative;
+    flex-shrink: 0;
+  }
 
-        h1 {
-            font-family: 'Fraunces', serif;
-            font-weight: 500;
-            font-size: 20px;
-            letter-spacing: -0.015em;
-            margin: 0;
-        }
+  .icon {
+    width: 120px;
+    height: 120px;
+    opacity: 0;
+    transform: translateX(100vw);
+    position: relative;
+    z-index: 2;
+  }
 
-        .meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--muted);
-            font-size: 12px;
-        }
+  .icon.slide {
+    animation: slideBounce 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
 
-        .pulse-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--accent);
-            animation: pulse 2.4s ease-out infinite;
-        }
+  @keyframes slideBounce {
+    0% { opacity: 0; transform: translateX(100vw); }
+    35% { opacity: 1; transform: translateX(-350px); }
+    55% { transform: translateX(15px); }
+    70% { transform: translateX(-8px); }
+    85% { transform: translateX(4px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
 
-        .bar {
-            width: 132px;
-            height: 3px;
-            border-radius: 3px;
-            background: var(--line);
-            overflow: hidden;
-        }
+  .smoke-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
 
-        .fill {
-            width: 0%;
-            height: 100%;
-            border-radius: 3px;
-            background: var(--accent);
-            transition: width .15s linear;
-        }
+  .puff {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 70%);
+    animation: puffFade var(--dur) ease-out forwards;
+    pointer-events: none;
+  }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 var(--accent-soft); }
-            70% { box-shadow: 0 0 0 10px transparent; }
-            100% { box-shadow: 0 0 0 0 transparent; }
-        }
+  @keyframes puffFade {
+    0% { opacity: 0.7; transform: scale(0.2) translate(0, 0); }
+    30% { opacity: 0.5; }
+    100% { opacity: 0; transform: scale(1.8) translate(var(--tx), var(--ty)); }
+  }
 
-        @media (prefers-reduced-motion: reduce) {
-            .pulse-dot { animation-duration: 1.6s; }
-        }
-    </style>
+  .trail {
+    width: 3px;
+    height: 0;
+    background: #98c379;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin: 0 12px;
+    opacity: 0;
+  }
+
+  .trail.show {
+    animation: trailAnim 1s ease forwards;
+  }
+
+  @keyframes trailAnim {
+    0% { height: 0; opacity: 0; }
+    20% { height: 120px; opacity: 0.9; }
+    50% { height: 80px; opacity: 0.6; }
+    75% { height: 40px; opacity: 0.3; }
+    100% { height: 120px; opacity: 0.8; }
+  }
+
+  .title {
+    font-family: 'BigParty', sans-serif;
+    font-size: 220px;
+    color: #98c379;
+    letter-spacing: 0.05em;
+    display: flex;
+    gap: 2px;
+  }
+
+  .char-group {
+    display: inline-block;
+    position: relative;
+    contain: layout style;
+  }
+
+  .line-wrap {
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .underline {
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #61afef, #56b6c2);
+    border-radius: 2px;
+  }
+
+  .underline.line-show {
+    animation: line 0.4s ease forwards;
+    animation-delay: 0.3s;
+  }
+
+  .underline.line-expand {
+    animation: lineExpand 0.5s ease forwards;
+  }
+
+  .line-wrap.exit-line {
+    animation: exitLeft 0.4s ease-in forwards;
+  }
+
+  @keyframes line { to { width: 70%; } }
+  @keyframes lineExpand { 0% { width: 70%; } 100% { width: 300%; } }
+
+  .char-wrap {
+    display: inline-block;
+    overflow: visible;
+  }
+
+  .char-wrap.jelly {
+    animation: jellyBounce 0.5s ease forwards;
+  }
+
+  @keyframes jellyBounce {
+    0%   { transform: scaleX(1) scaleY(1); }
+    20%  { transform: scaleX(0.8) scaleY(1.2); }
+    40%  { transform: scaleX(1.15) scaleY(0.85); }
+    60%  { transform: scaleX(0.95) scaleY(1.05); }
+    80%  { transform: scaleX(1.03) scaleY(0.97); }
+    100% { transform: scaleX(1) scaleY(1); }
+  }
+
+  .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px);
+    will-change: transform, opacity;
+  }
+
+  .char.show {
+    animation: appear 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes appear {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .icon.exit { animation: exitLeft 0.4s ease-in forwards; }
+  .trail.exit { animation: exitLeft 0.3s ease-in forwards; }
+  .char-group.exit { animation: exitLeft 0.3s ease-in forwards; }
+
+  @keyframes exitLeft {
+    0% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(-120vw); }
+  }
+
+
+</style>
 </head>
 <body>
-    <div class="splash">
-        <div class="mark">
-            <img src="icon.png" alt="RAZOR">
-        </div>
-        <div>
-            <h1>RAZOR</h1>
-            <div class="meta">
-                <span class="pulse-dot"></span>
-                <span>Memuat…</span>
-            </div>
-        </div>
-        <div class="bar"><div class="fill" id="fill"></div></div>
+  <div class="brand">
+    <div class="icon-area">
+      <img class="icon" id="icon" src="icon.png">
     </div>
-    <script>
-        function setSplashProgress(p) {
-            const fill = document.getElementById('fill');
-            if (fill) fill.style.width = p + '%';
-        }
-    </script>
+    <div class="trail" id="trail"></div>
+    <div class="title" id="title"></div>
+  </div>
+  <div class="smoke-layer" id="smokeLayer"></div>
+
+
+  <script>
+    const text = 'RAZOR';
+    const title = document.getElementById('title');
+    const icon = document.getElementById('icon');
+    const trail = document.getElementById('trail');
+    const smokeLayer = document.getElementById('smokeLayer');
+
+    function spawnPuff(x, y) {
+      const puff = document.createElement('div');
+      puff.className = 'puff';
+      const size = 25 + Math.random() * 55;
+      const tx = (Math.random() - 0.5) * 120;
+      const ty = (Math.random() - 0.5) * 100 - 30;
+      puff.style.cssText = `
+        width: ${size}px; height: ${size}px;
+        left: ${x - size / 2}px; top: ${y - size / 2}px;
+        --tx: ${tx}px; --ty: ${ty}px;
+        --dur: ${0.5 + Math.random() * 0.6}s;
+      `;
+      smokeLayer.appendChild(puff);
+      setTimeout(() => puff.remove(), 1200);
+    }
+
+    function trackIcon() {
+      const rect = icon.getBoundingClientRect();
+      return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+    }
+
+    function smokeTrail(duration, interval) {
+      const start = performance.now();
+      function tick(now) {
+        if (now - start > duration) return;
+        const pos = trackIcon();
+        spawnPuff(pos.x, pos.y);
+        spawnPuff(pos.x + (Math.random() - 0.5) * 20, pos.y + (Math.random() - 0.5) * 20);
+        setTimeout(() => requestAnimationFrame(tick), interval);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    text.split('').forEach((ch, i) => {
+      const group = document.createElement('div');
+      group.className = 'char-group';
+      group.style.setProperty('--jd', (i * 0.08) + 's');
+
+      const wrap = document.createElement('div');
+      wrap.className = 'char-wrap';
+
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.style.animationDelay = (300 + i * 180) + 'ms';
+      span.textContent = ch;
+
+      const lineWrap = document.createElement('div');
+      lineWrap.className = 'line-wrap';
+      const line = document.createElement('div');
+      line.className = 'underline';
+      line.style.animationDelay = (300 + i * 180) + 'ms';
+      lineWrap.appendChild(line);
+
+      wrap.appendChild(span);
+      group.appendChild(wrap);
+      group.appendChild(lineWrap);
+      title.appendChild(group);
+    });
+
+    // Trigger semua animasi sekaligus
+    requestAnimationFrame(() => {
+      title.querySelectorAll('.char').forEach(c => c.classList.add('show'));
+      title.querySelectorAll('.underline').forEach(l => l.classList.add('line-show'));
+    });
+
+    const iconDelay = 300 + (text.length - 1) * 180 + 100;
+    setTimeout(() => {
+      icon.classList.add('slide');
+      trail.classList.add('show');
+      smokeTrail(800, 25);
+    }, iconDelay);
+
+    setTimeout(() => {
+      title.querySelectorAll('.char-group').forEach((g) => {
+        const w = g.querySelector('.char-wrap');
+        w.style.animationDelay = g.style.getPropertyValue('--jd');
+        w.classList.add('jelly');
+
+        const ln = g.querySelector('.underline');
+        ln.classList.remove('line-show');
+        ln.classList.add('line-expand');
+        g.style.animationDelay = g.style.getPropertyValue('--jd');
+      });
+    }, iconDelay + 550);
+
+    const exitStart = iconDelay + 550 + 1000;
+    setTimeout(() => {
+      title.querySelectorAll('.line-wrap').forEach((lw) => {
+        lw.classList.add('exit-line');
+      });
+      setTimeout(() => icon.classList.add('exit'), 100);
+      setTimeout(() => trail.classList.add('exit'), 200);
+      title.querySelectorAll('.char-group').forEach((g, i) => {
+        setTimeout(() => g.classList.add('exit'), 300 + i * 100);
+      });
+      // Tandai animasi selesai (exit terakhir: 300 + 4*100 + 300 = 1000ms)
+      setTimeout(() => { window.__splashDone = true; }, 1000);
+    }, exitStart);
+  </script>
 </body>
 </html>
