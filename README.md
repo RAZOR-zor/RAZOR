@@ -88,7 +88,7 @@ Dark OLED, Inter, 60fps, no lag.
 |---|---|
 | **Jurnal Saya** | `M` — `Pembiasaan Harian` / `Mingguan` + `Tidak ada kegiatan non-rutin` → auto terisi, tinggal tanda tangan |
 | **Jadwal Pelajaran** | `Hari ini (Senin)` + `Besok`, `Lengkapnya →` ke halaman penuh, `Lihat Pelajaran` per jam |
-| **Akun Kejar** | Multi-akun `ardi / gatan / firman`, `1 tab`, `Hapus akun` / `Pengaturan` per akun, `+ Tambah akun` |
+| **Akun Kejar** | Multi-akun `razor` / `Pengaturan` per akun, `+ Tambah akun` |
 | **Catatan** | Editor `JetBrains Mono` + line numbers, `+ Tambah Format Akun`, `Export .txt`, `PIN 4-12` opsional (bisa dimatikan) |
 | **Theme** | `Theme → Local → Warna` 24 pilihan + `Foto` galeri + `Upload` video/foto custom + `Hapus Background` |
 | **Brand & Font** | `Brand`: teks `RAZOR` realtime, warna teks, tulisan & warna background Search (`GOOGLE`), logo `icon.png` <br> `Font`: `Tiny5` `Inter` `Montserrat` `Poppins` `Playfair Display` `Merriweather` `Lora` `Caveat` `Bebas Neue` + preview live |
