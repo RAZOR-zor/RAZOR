@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:020617,100:0F172A&height=200&section=header&text=RAZOR&fontSize=52&fontColor=F8FAFC&animation=fadeIn&desc=Kegiatan%20Mingguan%20Otomatis%20•%20SMK%20Wikrama%20Bogor&descAlignY=62&descSize=14" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:020617,100:0F172A&height=200&section=header&text=RAZOR&fontSize=52&fontColor=F8FAFC&animation=fadeIn&desc=Kegiatan%20Mingguan%20Otomatis%20•%20SMK%20%20&descAlignY=62&descSize=14" />
 
 <br/>
 
